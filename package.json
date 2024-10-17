@@ -12,6 +12,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "eslint-config-airbnb": "^19.0.4"
+    "eslint-config-airbnb": "^19.0.4",
+    "prettier": "3.3.3"
   }
 }
