@@ -17,53 +17,33 @@ mongoose
   })
   .catch((error) => console.log(error));
 
-  async function findUserById(id) {
-    try {
-      return await userModel.findById(id);
-    } catch (error) {
-      console.log(error);
-      return undefined;
-    }
-  }
-  
-  async function addUser(user) {
-    try {
-      const userToAdd = new userModel(user);
-      const savedUser = await userToAdd.save();
-      return savedUser;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  }
-  
-  async function findUserByName(name) {
-    return await userModel.find({ name: name });
-  }
-  
-  async function findUserByJob(job) {
-    return await userModel.find({ job: job });
-  }
-  
-  async function findUserByNameAndJob(name, job) {
-    return await userModel.find({ name: name, job: job });
-  }
-  
-  async function deleteUser(id) {
-    return await userModel.findByIdAndDelete(id);
-  }
-  
-  // async function disconnectDB() {
-  //   await mongoose.connection.close();
-  //   await mongoose.disconnect();
-  // }
-  
-  export default {
-    addUser,
-    getUsers,
-    findUserById,
-    findUserByName,
-    findUserByJob,
-  };
-  
-  // exports.disconnectDB = disconnectDB;
+
+  import {body, validationResult} from "express-validator"
+
+const signupValidators = [
+    body("email").isEmail().withMessage("Please enter a valid email"),
+    body("password")
+        .isLength({min: 8})
+        .withMessage("Password must be at least 8 characters long")
+        // .matches(/^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z])$/)
+        .isStrongPassword({
+            minLength: 8,
+            minLowercase: 3,
+            minUppercase: 2,
+            minNumbers: 2,
+            minSymbols: 1,
+            returnScore: false,
+        })
+        .withMessage("Password must include at least 2 uppercase, 3 lowercase, 1 symbol, and 2 digits")
+]
+
+const signup = async (email, password) => {
+    // check if DB has email, username, assciated
+    
+}
+
+const login = async (email, password) => {
+
+}
+
+export default {signupValidators, signup}
