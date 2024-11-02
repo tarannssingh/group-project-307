@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors"
-import user from "./user";
+import user from "./user-services.js";
 import { validationResult } from "express-validator";
 
 
@@ -15,15 +15,15 @@ app.get("/", (req, res) => {
     res.send("hi")
 }) 
 
-app.post("/signup", signupValidators, async (req, res) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array()})
-    } 
-    if 
-    let promise = await user.signup(req.body.email, req.body.password)
+// app.post("/signup", signupValidators, async (req, res) => {
+//     // const errors = validationResult(req)
+//     // if (!errors.isEmpty()) {
+//     //     return res.status(400).json({ errors: errors.array()})
+//     // } 
+//     // if 
+//     // let promise = await user.signup(req.body.email, req.body.password)
 
-})
+// })
 
 app.listen(port, () => {
     console.log(`Piggy Pass @ localhost:${port}`)

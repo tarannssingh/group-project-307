@@ -1,21 +1,21 @@
-import mongoose from "mongoose";
-import userModel from "./user";
+// import mongoose from "mongoose";
+// // import userModel from "./user";
 
-import dotenv from "dotenv"
+// import dotenv from "dotenv"
 
-dotenv.config();
+// dotenv.config();
 
-mongoose.set("debug", true);
+// mongoose.set("debug", true);
 
-mongoose
-  .connect(
-    process.env.MONGODB_URI,
-    // "mongodb://localhost:27017/users", 
-    {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .catch((error) => console.log(error));
+// mongoose
+//   .connect(
+//     process.env.MONGODB_URI,
+//     // "mongodb://localhost:27017/users", 
+//     {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .catch((error) => console.log(error));
 
 
   import {body, validationResult} from "express-validator"

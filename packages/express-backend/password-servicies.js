@@ -18,6 +18,6 @@ bcrypt.compare(password, ex3).then((result) => console.log(result));
 
 
 const hashPassword = async (password) => {
-    await 
+    return 
 }
 
