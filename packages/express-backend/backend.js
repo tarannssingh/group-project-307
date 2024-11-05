@@ -45,11 +45,8 @@ app.post('/api/credential', async(req, res) =>{
         return res.status(400).json({error: "Username, password and website are required"})
     }
 
-    //encrypt the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     //save the credential
-    const credential = new Credential ({username, website, password: hashedPassword});
+    const credential = new Credential ({username, website, password});
 
    // Save the credential to the database
    try {
