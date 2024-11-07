@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors"
 import { validationResult } from "express-validator";
-import userServicies from "./user-servicies.js";
+import userServicies from "./user-services.js";
 import dotenv from "dotenv"
 import mongoose from "mongoose"
 import Credential from "./user.js";
