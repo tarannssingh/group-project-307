@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 
+
 const UserSchema = new mongoose.Schema(
     {
         email : {
@@ -12,8 +13,12 @@ const UserSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
+        date: {
+            type: Date,
+            default: Date.now()
+        }
     },
-    { collection : "users_list"}
+    { collection : "users"}
 );
 
 const User = mongoose.model("User", UserSchema)
