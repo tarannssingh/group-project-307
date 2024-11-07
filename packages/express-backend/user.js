@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
+        totp_secret : {
+            type: String,
+            required: true,
+        },
         date: {
             type: Date,
             default: Date.now()
