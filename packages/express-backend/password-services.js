@@ -1,5 +1,28 @@
 
-function passwordStrength(pw) {
+const passwordGenCheck = () => {
+    var randLength = 1;
+    var randPW = ""
+    while(passwordStrength(randPW) !== "Very Strong") {
+        randLength = Math.floor(Math.random() * 14) + 14;
+        randPW = passwordGenerator(randLength);
+    }
+    return randPW
+}
+
+const passwordGenerator = (pwLength) => {
+    var ret = "";
+    const numChar = "0123456789";
+    const uppChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowChar = "abcdefghijklmnopqrstuvwxyz";
+    const speChar = "!@#$%^&*";
+    const allChar = numChar + uppChar + lowChar + speChar;
+    for(var i = 0, n = allChar.length; i < pwLength; ++i) {
+        ret += allChar.charAt(Math.floor(Math.random() * n));
+    }
+    return ret
+}
+
+const passwordStrength = (pw) => {
     const criteria = {
         length: false,
         uppercase: false,
@@ -8,7 +31,7 @@ function passwordStrength(pw) {
         speChar: false,
     };
 
-    if(pw.length >= 10) {
+    if(pw.length >= 14) {
         criteria.length = true;
     }
     if(/[A-Z]/.test(pw)) {
@@ -20,7 +43,7 @@ function passwordStrength(pw) {
     if(/\d/.test(pw)) {
         criteria.number = true;
     }
-    if(/[$@!%*?&]/.test(pw)) {
+    if(/[!@#$%^&*]/.test(pw)) {
         criteria.speChar = true;
     }
     const met = Object.values(criteria).filter(Boolean).length;
@@ -40,4 +63,4 @@ function passwordStrength(pw) {
     }
 }
 
-export default {signupValidators, signup, passwordStrength};
+export default {passwordGenCheck, passwordGenerator, passwordStrength};
