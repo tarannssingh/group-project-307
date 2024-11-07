@@ -15,5 +15,8 @@
     "eslint-config-airbnb": "^19.0.4",
     "nodemon": "^3.1.7",
     "prettier": "3.3.3"
+  },
+  "dependencies": {
+    "react-router-dom": "^6.27.0"
   }
 }
