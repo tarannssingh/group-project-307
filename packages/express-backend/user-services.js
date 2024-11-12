@@ -23,7 +23,15 @@ const accessValidators = [
             minSymbols: 1,
             returnScore: false,
         })
-        .withMessage("Password must include at least 2 uppercase, 3 lowercase, 1 symbol, and 2 digits")
+        .withMessage("Password must include at least 2 uppercase, 3 lowercase, 1 symbol, and 2 digits"),
+    body("confirmationPassword")
+        .custom((value, {req}) => {
+            if (value != req.body.password ) {
+                return false
+            }
+            return true
+        })
+        .withMessage("Password and Confirmation Password do not match")
 ]
 
 const loginValidators = [
@@ -57,11 +65,14 @@ const generateTotpSecret = () => {
     return (SpeakEasy.generateSecret({length: 20})).base32;
 }
 
-const signup = async (email, password) => {
+const signup = async (email, password, confirm) => {
     // check if DB has email already
     const users = await User.find({email: email})
     if (users.length != 0) {
         throw Error("A user with this email already exsists")
+    }
+    if (confirm != password) {
+        throw Error("Password and Confirmation Passowrd do not match.")
     }
     const totp_secret = await generateTotpSecret()
     const hashedPassword = await hashPassword(password)
