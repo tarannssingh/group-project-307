@@ -66,7 +66,28 @@ async function encrypt (plainText) {
 //     console.log(decrypted);
 // })()
   
+const passwordGenCheck = () => {
+    var randLength = 1;
+    var randPW = ""
+    while(passwordStrength(randPW) !== "Very Strong") {
+        randLength = Math.floor(Math.random() * 14) + 14;
+        randPW = passwordGenerator(randLength);
+    }
+    return randPW
+}
 
+const passwordGenerator = (pwLength) => {
+    var ret = "";
+    const numChar = "0123456789";
+    const uppChar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowChar = "abcdefghijklmnopqrstuvwxyz";
+    const speChar = "!@#$%^&*";
+    const allChar = numChar + uppChar + lowChar + speChar;
+    for(var i = 0, n = allChar.length; i < pwLength; ++i) {
+        ret += allChar.charAt(Math.floor(Math.random() * n));
+    }
+    return ret
+}
 
 function passwordStrength(pw) {
     const criteria = {
@@ -109,4 +130,4 @@ function passwordStrength(pw) {
     }
 }
 
-export default {decrypt, encrypt, passwordStrength};
+export default {decrypt, encrypt, passwordGenCheck, passwordGenerator, passwordStrength};
