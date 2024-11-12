@@ -60,7 +60,7 @@ async function encrypt (plainText) {
 
 // test
 // (async () => {
-//     const encrypted = await encrypt("hi, my name is Taran")
+//     const encrypted = await encrypt("hi, my name is Taran");
 //     console.log(encrypted);
 //     const decrypted = await decrypt(encrypted)
 //     console.log(decrypted);
@@ -98,7 +98,7 @@ function passwordStrength(pw) {
         speChar: false,
     };
 
-    if(pw.length >= 10) {
+    if(pw.length >= 14) {
         criteria.length = true;
     }
     if(/[A-Z]/.test(pw)) {
@@ -129,5 +129,19 @@ function passwordStrength(pw) {
             return "Invalid"
     }
 }
+
+// test
+// (async () => {
+//     const weak = await passwordStrength("ooo");
+//     console.log(weak);
+//     const password = await passwordStrength("89y82dh2d0#@$1Es");
+//     console.log(password);
+//     const generator = await passwordGenerator(10);
+//     console.log(generator);
+//     const autoGenerator = await passwordGenCheck();
+//     console.log(autoGenerator);
+//     const autoCheck = await passwordStrength(autoGenerator);
+//     console.log(autoCheck);
+// })()
 
 export default {decrypt, encrypt, passwordGenCheck, passwordGenerator, passwordStrength};
