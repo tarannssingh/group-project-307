@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
 function Home() {
-  return <div>Home Page Here!</div>;
+  return <div>
+      <h1>
+        Home Page Here!
+      </h1>
+    </div>;
 }
 export default Home;
