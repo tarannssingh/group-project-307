@@ -2,7 +2,6 @@ import bcrypt from "bcrypt"
 import {body, validationResult} from "express-validator"
 import User from "./user.js"
 import jwt from "jsonwebtoken"
-import crypto from "crypto"
 import SpeakEasy from "speakeasy"
 
 import dotenv from "dotenv"
@@ -24,7 +23,7 @@ const accessValidators = [
             returnScore: false,
         })
         .withMessage("Password must include at least 2 uppercase, 3 lowercase, 1 symbol, and 2 digits"),
-    body("confirmationPassword")
+    body("confirmPassword")
         .custom((value, {req}) => {
             if (value != req.body.password ) {
                 return false

@@ -4,7 +4,8 @@ import { validationResult } from "express-validator";
 import userServicies from "./user-services.js";
 import dotenv from "dotenv"
 import mongoose from "mongoose"
-import Credential from "./user.js";
+import User from "./user.js";
+import Credential from "./credential.js";
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 
 const app = express();
-const port = 9999;
+const port = 5478;
 
 
 app.use(express.json());
@@ -29,9 +30,9 @@ app.post("/signup", userServicies.accessValidators, async (req, res) => {
     try {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            throw Error(errors.array()[0].msg)
-        } 
-        const newUser = await userServicies.signup(req.body.email, req.body.password)
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const newUser = await userServicies.signup(req.body.email, req.body.password, req.body.confirmPassword)
         return res.status(201).json({
             message: "User Created",
             totp_secret: newUser.totp_secret,
