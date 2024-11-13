@@ -150,7 +150,7 @@ const passwordGenerator = (pwLength) => {
     return ret
 }
 
-function passwordStrength(pw) {
+const passwordStrength = (pw) => {
     const criteria = {
         length: false,
         uppercase: false,
@@ -159,7 +159,6 @@ function passwordStrength(pw) {
         speChar: false,
     };
 
-    if(pw.length >= 14) {
     if(pw.length >= 14) {
         criteria.length = true;
     }
