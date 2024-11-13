@@ -65,6 +65,50 @@ async function encrypt (plainText) {
 //     const decrypted = await decrypt(encrypted)
 //     console.log(decrypted);
 // })()
+
+
+const substitutionTable = {
+    a: ["@", "4", "a"],
+    b: ["8", "B", "b"],
+    c: ["(", "c", "C"],
+    d: ["D", "d"],
+    e: ["3", "E", "e"],
+    f: ["F", "f"],
+    g: ["9", "G", "g"],
+    h: ["#", "h", "H"],
+    i: ["!", "1", "i"],
+    j: ["j", "J"],
+    k: ["K", "k"],
+    l: ["1", "l"],
+    m: ["M", "m"],
+    n: ["N", "n"],
+    o: ["0", "o"],
+    p: ["P", "p"],
+    q: ["Q", "q"],
+    r: ["R", "r"],
+    s: ["$", "5", "s"],
+    t: ["7", "t", "T"],
+    u: ["U", "u"],
+    v: ["V", "v"],
+    w: ["W", "w"],
+    x: ["X", "x"],
+    y: ["Y", "y"],
+    z: ["2", "z"]
+}
+
+const substituteWord = (word) => {
+    let stronger = ""
+    word.toLowerCase().split("").forEach((letter) => {
+        const subs = substitutionTable[letter]
+        stronger += subs[Math.floor(Math.random() * subs.length)]
+    })
+    console.log(stronger)
+}
+
+// (() => {
+//     substituteWord("myBestPassword")
+// })()
+
   
 const passwordGenCheck = () => {
     var randLength = 1;
