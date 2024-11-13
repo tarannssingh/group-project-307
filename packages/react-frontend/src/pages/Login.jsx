@@ -3,12 +3,29 @@ import React, { useState } from "react";
 function Login(props) {
   const [creds, setCreds] = useState({
     username: "",
-    pwd: ""
+    pwd: "",
   });
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    switch (name) {
+      case "username":
+        setCreds({ ...creds, username: value });
+        break;
+      case "password":
+        setCreds({ ...creds, pwd: value });
+        break;
+    }
+  }
+
+  function submitForm() {
+    props.handleSubmit(creds);
+    setCreds({ username: "", pwd: "" });
+  }
 
   return (
     <form>
-      <label htmlFor="username">UserName</label>
+      <label htmlFor="username">Email</label>
       <input
         type="text"
         name="username"
@@ -31,49 +48,6 @@ function Login(props) {
       />
     </form>
   );
-
-  function loginUser(creds) {
-    const promise = fetch(`${API_PREFIX}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(creds)
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          response
-            .json()
-            .then((payload) => setToken(payload.token));
-          setMessage(`Login successful; auth token saved`);
-        } else {
-          setMessage(
-            `Login Error ${response.status}: ${response.data}`
-          );
-        }
-      })
-      .catch((error) => {
-        setMessage(`Login Error: ${error}`);
-      });
-  
-    return promise;
-  }
-
-  function handleChange(event) {
-    const { name, value } = event.target;
-    switch (name) {
-      case "username":
-        setCreds({ ...creds, username: value });
-        break;
-      case "password":
-        setCreds({ ...creds, pwd: value });
-        break;
-    }
-  }
-
-  function submitForm() {
-    props.handleSubmit(creds);
-    setCreds({ username: "", pwd: "" });
-  }
 }
+
 export default Login;
