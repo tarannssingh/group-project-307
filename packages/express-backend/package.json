@@ -19,6 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.0",
+    "omgopass": "^3.2.1",
     "speakeasy": "^2.0.0"
   }
 }

@@ -3,25 +3,49 @@ import Credential from "./credential.js";
 
 mongoose.set("debug", true);
 
-// const mongoURI = 'mongodb+srv://admin:WB8kHNmtJGNx8J1F@307-cluster.dvtn5.mongodb.net/?retryWrites=true&w=majority&appName=307-cluster'; // Replace with MongoDB connection string
-// mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-//     .then(() => console.log('MongoDB connected'))
-//     .catch(err => console.log('MongoDB connection error:', err));
+// Function to find credentials by website
+async function findCredentialByWebsite(website) {
+    try {
+        const credential = await Credential.findOne({ website });
+        return credential;
+    } catch (error) {
+        throw new Error(`Error finding credential by website: ${error.message}`);
+    }
+}
 
+// Function to find credentials by username
+async function findCredentialByUsername(username) {
+    try {
+        const credential = await Credential.findOne({ username });
+        return credential;
+    } catch (error) {
+        throw new Error(`Error finding credential by username: ${error.message}`);
+    }
+}
 
-function findAllCredentials() {
-    return Credential.find();
+// Additional function to find credentials by both username and website if needed
+async function findCredentialByUsernameAndWebsite(username, website) {
+    try {
+        const credential = await Credential.findOne({ username, website });
+        return credential;
+    } catch (error) {
+        throw new Error(`Error finding credential by username and website: ${error.message}`);
+    }
 }
-    
-function findCredentialByWebsite(name) {
-    return Credential.find({ name: name });
-    
+
+//retruns all credentials
+async function findAllCredentials() {
+    try {
+        const credentials = await Credential.find({});
+        return credentials;
+    } catch (error) {
+        throw new Error(`Error retrieving all credentials: ${error.message}`);
+    }
 }
-    
-function findCredentialById(id) {
-    return Credential.findById(id);
-    
-}
-    
-export default { findAllCredentials, findCredentialById, findCredentialByWebsite };
-    
+
+export { 
+    findCredentialByWebsite, 
+    findCredentialByUsername, 
+    findCredentialByUsernameAndWebsite,
+    findAllCredentials
+};

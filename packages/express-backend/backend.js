@@ -4,7 +4,8 @@ import { validationResult } from "express-validator";
 import userServicies from "./user-services.js";
 import dotenv from "dotenv"
 import mongoose from "mongoose"
-import Credential from "./user.js";
+import User from "./user.js";
+import Credential from "./credential.js";
 
 dotenv.config();
 
