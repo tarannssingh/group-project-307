@@ -48,7 +48,7 @@ function App() {
         setMessage(`Login Error: ${error}`);
       });
   }
-//Invalid input signup error: 400, JSON: {"email":"epears04@calpoly.edu","pwd":"P4ssw0rd!","confirmPwd":"P4ssw0rd!"}
+  
   function signupUser(creds) {
     const formattedCreds = {
       email: creds.email,              
