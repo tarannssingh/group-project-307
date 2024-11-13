@@ -1,46 +1,34 @@
-import React from "react";
+// Table.jsx
+import React from 'react';
 
-function TableHeader() {
+function TableBody({ characterData }) {
+  if (characterData === null) {
+    return <caption>Data Unavailable</caption>;
+  }
+
   return (
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Job</th>
-        <th>ID</th>
-        <th>Remove</th>
-      </tr>
-    </thead>
+    <tbody>
+      {characterData.map((character, index) => (
+        <tr key={index}>
+          <td>{character.name}</td>
+          <td>{character.email}</td>
+          {/* Add more columns as needed */}
+        </tr>
+      ))}
+    </tbody>
   );
 }
 
-function TableBody(props) {
-  if (props.characterData === null) {
-    return <caption>Data Unavailable</caption>;
-  } else {
-    const rows = props.characterData.map((row, index) => {
-      return (
-        <tr key={index}>
-          <td>{row.name}</td>
-          <td>{row.job}</td>
-          <td>{row.id}</td>
-          <td>
-            <button onClick={() => props.removeCharacter(index)}>Delete</button>
-          </td>
-        </tr>
-      );
-    });
-    return <tbody>{rows}</tbody>;
-  }
-}
-
-function Table(props) {
+function Table({ characterData }) {
   return (
     <table>
-      <TableHeader />
-      <TableBody
-        characterData={props.characterData}
-        removeCharacter={props.removeCharacter}
-      />
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <TableBody characterData={characterData} />
     </table>
   );
 }
