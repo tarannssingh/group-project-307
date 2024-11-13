@@ -160,6 +160,7 @@ function passwordStrength(pw) {
     };
 
     if(pw.length >= 14) {
+    if(pw.length >= 14) {
         criteria.length = true;
     }
     if(/[A-Z]/.test(pw)) {
@@ -171,7 +172,7 @@ function passwordStrength(pw) {
     if(/\d/.test(pw)) {
         criteria.number = true;
     }
-    if(/[$@!%*?&]/.test(pw)) {
+    if(/[!@#$%^&*]/.test(pw)) {
         criteria.speChar = true;
     }
     const met = Object.values(criteria).filter(Boolean).length;
