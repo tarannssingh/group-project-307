@@ -24,7 +24,7 @@ const accessValidators = [
             returnScore: false,
         })
         .withMessage("Password must include at least 2 uppercase, 3 lowercase, 1 symbol, and 2 digits"),
-    body("confirmationPassword")
+    body("confirmPassword")
         .custom((value, {req}) => {
             if (value != req.body.password ) {
                 return false

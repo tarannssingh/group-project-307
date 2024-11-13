@@ -1,49 +1,45 @@
+// Login.jsx
 import React, { useState } from "react";
 
 function Login(props) {
   const [creds, setCreds] = useState({
-    username: "",
-    pwd: "",
+    email: "",
+    password: "",
+    totp: "",
   });
 
   function handleChange(event) {
     const { name, value } = event.target;
-    switch (name) {
-      case "username":
-        setCreds({ ...creds, username: value });
-        break;
-      case "password":
-        setCreds({ ...creds, pwd: value });
-        break;
-    }
+    setCreds({ ...creds, [name]: value });
   }
 
   function submitForm() {
     props.handleSubmit(creds);
-    setCreds({ username: "", pwd: "" });
+    setCreds({ email: "", password: "", totp: "" }); // Clear form fields
   }
 
   return (
     <form>
-      <label htmlFor="username">Email</label>
+      <label htmlFor="email">Email</label>
       <input
-        type="text"
-        name="username"
-        id="username"
-        value={creds.username}
+        type="email"
+        name="email"
+        id="email"
+        value={creds.email}
         onChange={handleChange}
       />
+
       <label htmlFor="password">Password</label>
       <input
         type="password"
         name="password"
         id="password"
-        value={creds.pwd}
+        value={creds.password}
         onChange={handleChange}
       />
       <input
         type="button"
-        value={props.buttonLabel || "Log In"}
+        value="Log In"
         onClick={submitForm}
       />
     </form>

@@ -2,53 +2,81 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import SignUp from "./pages/SignUp";
 
 function App() {
-  const API_PREFIX = "http://localhost:5173";
-  const [characters, setCharacters] = useState([]);
+  const API_PREFIX = "http://localhost:5478";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
+  const [characters, setCharacters] = useState([]);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     fetchUsers()
-      .then((res) =>
-        res.status === 200 ? res.json() : undefined
-      )
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setCharacters(json["users_list"]);
+          setCharacters(json); 
         } else {
           setCharacters(null);
         }
-      })
+      })      
       .catch((error) => {
         console.log(error);
       });
-  });
+  }, [token]);
 
   function loginUser(creds) {
-    const promise = fetch(`${API_PREFIX}/login`, {
+    return fetch(`${API_PREFIX}/login`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(creds),
+      body: JSON.stringify(creds)
     })
       .then((response) => {
         if (response.status === 200) {
-          response.json().then((payload) => setToken(payload.token));
-          setMessage(`Login successful; auth token saved`);
+          return response.json().then((payload) => {
+            setToken(payload.token);
+            setMessage("Login successful; auth token saved");
+          });
         } else {
-          setMessage(`Login Error ${response.status}: ${response.data}`);
+          setMessage(`Login Error ${JSON.stringify(creds)}`);
         }
       })
       .catch((error) => {
         setMessage(`Login Error: ${error}`);
       });
-
-    return promise;
   }
+//Invalid input signup error: 400, JSON: {"email":"epears04@calpoly.edu","pwd":"P4ssw0rd!","confirmPwd":"P4ssw0rd!"}
+  function signupUser(creds) {
+    const formattedCreds = {
+      email: creds.email,              
+      password: creds.pwd,              
+      confirmPassword: creds.confirmPwd 
+    };
+    return fetch(`${API_PREFIX}/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formattedCreds)
+    })
+    .then((response) => {
+      if (response.status === 201) {
+        return response.json().then((payload) => {
+          setToken(payload.token);
+          setMessage(`Signup successful for user: ${creds.email}; auth token saved`);
+        });
+      } else {
+        setMessage(`Invalid input signup error: ${response.status} \n${errorMessage}`);
+      }
+    })
+    .catch((error) => {
+      setMessage(`Signup Error: ${error.message}\nJSON: ${JSON.stringify(creds)}`);
+    });
+  }
+  
 
   function addAuthHeader(otherHeaders = {}) {
     if (token === INVALID_TOKEN) {
@@ -56,16 +84,15 @@ function App() {
     } else {
       return {
         ...otherHeaders,
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       };
     }
   }
 
   function fetchUsers() {
-    const promise = fetch(`${API_PREFIX}/api/credentials`, {
+    return fetch(`${API_PREFIX}/api/credentials`, {
       headers: addAuthHeader(),
     });
-    return promise;
   }
 
   return (
@@ -74,8 +101,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login handleSubmit={loginUser} />} />
+          <Route path="/signup" element={<SignUp handleSubmit={signupUser} buttonLabel="Sign Up" />} />
         </Routes>
       </BrowserRouter>
+      <p>{message}</p>
     </div>
   );
 }
