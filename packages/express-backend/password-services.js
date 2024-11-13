@@ -105,9 +105,9 @@ const substituteWord = (word) => {
     console.log(stronger)
 }
 
-// (() => {
-//     substituteWord("myBestPassword")
-// })()
+(() => {
+    substituteWord("myBestPassword")
+})()
 
   
 const passwordGenCheck = () => {
