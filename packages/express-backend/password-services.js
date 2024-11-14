@@ -1,5 +1,6 @@
 import crypto from "crypto"
 import dotenv from "dotenv"
+import generatePassword from "omgopass";
 dotenv.config()
 
 async function decrypt (encryptedText) {
@@ -105,9 +106,9 @@ const substituteWord = (word) => {
     console.log(stronger)
 }
 
-// (() => {
-//     substituteWord("myBestPassword")
-// })()
+(() => {
+    substituteWord("myBestPassword")
+})()
 
   
 const passwordGenCheck = () => {
@@ -116,6 +117,22 @@ const passwordGenCheck = () => {
     while(passwordStrength(randPW) !== "Very Strong") {
         randLength = Math.floor(Math.random() * 14) + 14;
         randPW = passwordGenerator(randLength);
+    }
+    
+    const splice = generatePassword({
+        syllablesCount: 5,
+        minSyllableLength: 1,
+        maxSyllableLength: 3,
+        hasNumbers: true,
+        titlecased: true,
+        separators: "-_",
+        vowels: "аеиоуэюя",
+        consonants: "бвгджзклмнпрстчш"
+      });
+    
+    for(let i = 0; i < splice.length; i++) {
+        const ins = Math.floor(Math.random() * randPW.length);
+        randPW = randPW.substring(0, ins) + splice[i] + randPW.substring(ins, randPW.length);
     }
     return randPW
 }
@@ -188,4 +205,4 @@ function passwordStrength(pw) {
 //     console.log(autoCheck);
 // })()
 
-export default {decrypt, encrypt, passwordGenCheck, passwordGenerator, passwordStrength};
+export default {decrypt, encrypt, substituteWord, passwordGenCheck, passwordGenerator, passwordStrength};

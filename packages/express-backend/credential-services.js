@@ -42,9 +42,12 @@ async function findAllCredentials() {
         throw new Error(`Error retrieving all credentials: ${error.message}`);
     }
 }
-
-export { 
-    findCredentialByWebsite, 
+    
+function findCredentialById(id) {
+    return Credential.findById(id);
+}
+    
+export default { findAllCredentials, findCredentialById, findCredentialByWebsite, 
     findCredentialByUsername, 
     // findCredentialByUsernameAndWebsite,
     findAllCredentials

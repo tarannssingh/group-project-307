@@ -30,9 +30,9 @@ app.post("/signup", userServicies.accessValidators, async (req, res) => {
     try {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            throw Error(errors.array()[0].msg)
-        } 
-        const newUser = await userServicies.signup(req.body.email, req.body.password)
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const newUser = await userServicies.signup(req.body.email, req.body.password, req.body.confirmPassword)
         return res.status(201).json({
             message: "User Created",
             totp_secret: newUser.totp_secret,
