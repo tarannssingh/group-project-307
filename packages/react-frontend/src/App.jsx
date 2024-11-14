@@ -97,7 +97,7 @@ function App() {
   }
 
   function fetchUsers() {
-    return fetch(`${API_PREFIX}/api/credentials`, {
+    return fetch(`${API_PREFIX}/users`, {
       headers: addAuthHeader(),
     });
   }

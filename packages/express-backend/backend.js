@@ -6,6 +6,7 @@ import dotenv from "dotenv"
 import mongoose from "mongoose"
 import credentials from "./credential.js";
 import * as CredentialService from './credential-services.js';
+import User from "./user.js";
 
 dotenv.config();
 
@@ -61,6 +62,15 @@ app.post("/login", userServicies.loginValidators, async (req, res) => {
     }
 })
 
+app.get("/users", async(req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(400).json({ message: 'Error retrieving users', error: error.message });
+    }
+});
+
 //CREDENTIAL ENDPOINTS
 
 //POST /api/credential endpoint -- accept username, website and password
@@ -95,6 +105,9 @@ app.delete('/credentials/:id', async(req,res) =>{
         res.status(500).json({ message: 'Error deleting credential', error: error.message });
     }
 })
+
+
+
 
 
 // GET /api/credentials ---Retrieve ALL credentials, including passwords
