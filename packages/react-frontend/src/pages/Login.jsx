@@ -10,7 +10,17 @@ function Login(props) {
 
   function handleChange(event) {
     const { name, value } = event.target;
-    setCreds({ ...creds, [name]: value });
+    switch (name) {
+      case "email":
+        setCreds({ ...creds, email: value });
+        break;
+      case "password":
+        setCreds({ ...creds, password: value });
+        break;
+      case "totp":
+        setCreds({ ...creds, totp: value });
+        break;
+    }
   }
 
   function submitForm() {
@@ -37,6 +47,16 @@ function Login(props) {
         value={creds.password}
         onChange={handleChange}
       />
+
+      <label htmlFor="email">2FA</label>
+      <input
+        type="number" //for styling purposes
+        name="totp"
+        id="totp"
+        value={creds.totp}
+        onChange={handleChange}
+      />
+
       <input
         type="button"
         value="Log In"

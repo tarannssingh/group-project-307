@@ -41,7 +41,7 @@ function App() {
             setMessage("Login successful; auth token saved");
           });
         } else {
-          setMessage(`Login Error ${JSON.stringify(creds)}`);
+          setMessage(`Login Error: ${ error }, json information ${JSON.stringify(creds)}`);
         }
       })
       .catch((error) => {
@@ -66,7 +66,7 @@ function App() {
       if (response.status === 201) {
         return response.json().then((payload) => {
           setToken(payload.token);
-          setMessage(`Signup successful for user: ${creds.email}; auth token saved`);
+          setMessage(`Signup successful for user: ${creds.email}! JSON response ${JSON.stringify(payload)}`);
         });
       } else {
         setMessage(`Invalid input signup error: ${response.status} \n${errorMessage}`);
