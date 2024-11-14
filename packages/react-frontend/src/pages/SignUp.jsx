@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function SignUp(props) {
   const [creds, setCreds] = useState({
@@ -58,6 +59,9 @@ function SignUp(props) {
         value={props.buttonLabel || "Sign Up"}
         onClick={submitForm}
       />
+      <p>
+        Already have a PiggyPass Account? <Link to="/login">Log In here!</Link>
+      </p>
     </form>
   );
 }
