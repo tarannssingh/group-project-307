@@ -2,7 +2,6 @@ import bcrypt from "bcrypt"
 import {body, validationResult} from "express-validator"
 import User from "./user.js"
 import jwt from "jsonwebtoken"
-import crypto from "crypto"
 import SpeakEasy from "speakeasy"
 
 import dotenv from "dotenv"

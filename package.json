@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npm run eslint packages/react-frontend",
+    "prettier:check": "npx prettier --check 'packages/express-backend/**/*.{js,jsx,ts,tsx,json,css,md}' 'packages/react-frontend/**/*.{js,jsx,ts,tsx,json,css,md}'"
   },
   "author": "",
   "license": "ISC",
@@ -18,12 +20,9 @@
     "prettier": "^3.3.3"
   },
   "dependencies": {
-<<<<<<< HEAD
     "express-validator": "^7.2.0",
-=======
     "dotenv": "^16.4.5",
     "mongodb": "^6.10.0",
->>>>>>> 8656ff74e63069f815cdc4b744d56db624278579
     "react-router-dom": "^6.27.0"
   }
 }

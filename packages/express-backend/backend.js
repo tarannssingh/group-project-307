@@ -4,8 +4,9 @@ import { validationResult } from "express-validator";
 import userServicies from "./user-services.js";
 import dotenv from "dotenv"
 import mongoose from "mongoose"
+import credentials from "./credential.js";
+import * as CredentialService from './credential-services.js';
 import User from "./user.js";
-import Credential from "./credential.js";
 
 dotenv.config();
 
@@ -61,21 +62,24 @@ app.post("/login", userServicies.loginValidators, async (req, res) => {
     }
 })
 
+app.get("/users", async(req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(400).json({ message: 'Error retrieving users', error: error.message });
+    }
+});
+
+//CREDENTIAL ENDPOINTS
 
 //POST /api/credential endpoint -- accept username, website and password
-app.post('/api/credential', async(req, res) =>{
+app.post('/credentials/add', async(req, res) =>{
     const { username, password, website} = req.body;
     console.log(req.body)
-    if ( !username || !website || !password){
-        
-        return res.status(400).json({error: "Username, password and website are required"})
-    }
-
-    //add encrypt for passowrd beinf added
-   // Save the credential to the database
    try {
         //save the credential
-        const credential = new Credential ({username, website, password});
+        const credential = new credentials ({username, website, password});
         await credential.save();
         res.status(201).json({ message: "Credential stored successfully", id: credential.id }); }
    catch (error) 
@@ -84,68 +88,76 @@ app.post('/api/credential', async(req, res) =>{
     }
 })
 
+
+//DELETE /api/credentials/:id ---deletes a credential by ID
+app.delete('/credentials/:id', async(req,res) =>{
+    const { id } = req.params;
+
+    try {
+        // Attempt to delete the credential by ID
+        const deletedCredential = await credentials.findByIdAndDelete(id);
+        if (deletedCredential) {
+            res.status(200).json({ message: 'Credential deleted successfully' });
+        } else {
+            res.status(404).json({ message: 'Credential not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting credential', error: error.message });
+    }
+})
+
+
+
+
+
+// GET /api/credentials ---Retrieve ALL credentials, including passwords
+app.get('/credentials/all', async (req, res) => {
+    try {
+        const credentials = await CredentialService.findAllCredentials();
+        res.status(200).json(credentials);
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving credentials', error: error.message });
+    }
+});
+
+// GET /api/credentials/:website-- retrive credential based on website searched
+app.get('/credentials/:website', async (req, res) => {
+    const { website } = req.params;
+    try {
+        const credential = await CredentialService.findCredentialByWebsite(website);
+        if (credential) {
+            res.status(200).json(credential);
+        } else {
+            res.status(404).json({ message: 'Credential not found for this website' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving credential by website', error: error.message });
+    }
+});
+
+// GET /api/credentials/:website-- retrive credential based on website searched
+
+app.get('/credentials/:username', async (req, res) => {
+    const { username } = req.params;
+    try {
+        const credential = await CredentialService.findCredentialByUsername(username);
+        if (credential) {
+            res.status(200).json(credential);
+        } else {
+            res.status(404).json({ message: 'Credential not found for this website' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving credential by website', error: error.message });
+    }
+});
+
 //for sprint 3
 //PUT /api/credentials/:id ---allows updating username, website and password
 //app.put('/api/credentials/:id')
 
 
+//GET /api/credentials/search? ---Find credentials based on a website thinking about search bars
 
-//DELETE /api/credentials/:id ---deletes a credential by ID
-app.delete('/api/credentials/:id', async(req,res) =>{
-    const { id } = req.params;
-
-    try {
-        // Attempt to delete the credential by ID
-        const deletedCredential = await Credential.findByIdAndDelete(id);
-
-        // if not found
-        if (!deletedCredential) {
-            return res.status(404).json({ error: "Credential not found" });
-        }
-
-        // Respond with a success message
-        res.status(200).json({ message: "Credential deleted successfully" });
-    } 
-    catch (error) {
-        // Handle any errors during the delete process
-        res.status(500).json({ error: "Error deleting credential" });
-    }
-});
-
-
-// GET /api/credentials ---Retrieve ALL credentials, including passwords
-app.get('/api/credentials', async (req, res) => {
-   try{
-        const credentials = await Credential.find();
-        res.status(200).json(credentials);
-   } catch (error)
-   {
-    res.status(500).json({ error: "Error retrieving credentials" });
-   }
-});
-
-// GET /api/credentials/:id ---Retrieve a specific credential, including password
-app.get('/api/credentials/:id', (req, res) => {
-    const credential = credentials.find(c => c.id === parseInt(req.params.id));
-    
-    if (!credential) {
-        return res.status(404).json({ error: "Credential not found" });
-    }
-
-    res.status(200).json(credential);
-});
-
-//GET /api/credentials/search? ---Find credentials based on a website serch
-app.get('/api/credentials/search', async (req, res) => {
-    const { website } = req.query; // Get the website from query parameters
-
-        try {
-            const credentials = await Credential.find({ website: { $regex: website, $options: 'i' } }); // Case-insensitive search
-            res.status(200).json(credentials);
-        } catch (error) {
-            res.status(500).json({ error: "Error searching for credentials" });
-        }
-});
 
 app.listen(port, () => {
     console.log(`Piggy Pass @ localhost:${port}`)
