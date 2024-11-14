@@ -1,5 +1,6 @@
 // Login.jsx
 import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login(props) {
   const [creds, setCreds] = useState({
@@ -7,6 +8,8 @@ function Login(props) {
     password: "",
     totp: "",
   });
+
+  const navigate = useNavigate();
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -24,7 +27,12 @@ function Login(props) {
   }
 
   function submitForm() {
-    props.handleSubmit(creds);
+    props.handleSubmit(creds).then((isLoginSuccessful) => {
+      if (isLoginSuccessful) {
+        navigate("/");
+      }
+    });
+
     setCreds({ email: "", password: "", totp: "" }); // Clear form fields
   }
 
@@ -48,7 +56,7 @@ function Login(props) {
         onChange={handleChange}
       />
 
-      <label htmlFor="email">2FA</label>
+      <label htmlFor="email">2FA Code</label>
       <input
         type="number" //for styling purposes
         name="totp"
@@ -62,6 +70,9 @@ function Login(props) {
         value="Log In"
         onClick={submitForm}
       />
+      <p>
+        Do you need a PiggyPass Account? <Link to="/signup">Sign Up here!</Link>
+      </p>
     </form>
   );
 }

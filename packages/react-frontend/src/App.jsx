@@ -27,6 +27,7 @@ function App() {
   }, [token]);
 
   function loginUser(creds) {
+    setMessage("");
     return fetch(`${API_PREFIX}/login`, {
       method: "POST",
       headers: {
@@ -38,18 +39,21 @@ function App() {
         if (response.status === 200) {
           return response.json().then((payload) => {
             setToken(payload.token);
-            setMessage("Login successful; auth token saved");
+            return true;
           });
         } else {
           setMessage(`Login Error: ${ error }, json information ${JSON.stringify(creds)}`);
+          return false;
         }
       })
       .catch((error) => {
         setMessage(`Login Error: ${error}`);
+        return false;
       });
   }
   
   function signupUser(creds) {
+    setMessage("");
     const formattedCreds = {
       email: creds.email,              
       password: creds.pwd,              
@@ -66,10 +70,13 @@ function App() {
       if (response.status === 201) {
         return response.json().then((payload) => {
           setToken(payload.token);
-          setMessage(`Signup successful for user: ${creds.email}! JSON response ${JSON.stringify(payload)}`);
+          setMessage(`Signup successful for user: ${creds.email}! Please use this code in your authenticator app to connect your PiggyPass Account: ${payload.totp_secret}`);
         });
       } else {
-        setMessage(`Invalid input signup error: ${response.status} \n${errorMessage}`);
+        return response.json().then((errorData) => {
+          const errorMessage = errorData.message || errorData.errors?.map(e => e.msg).join(", ");
+          setMessage(`Invalid input Signup error: ${errorMessage}`);
+        });
       }
     })
     .catch((error) => {
