@@ -16,11 +16,11 @@ function App() {
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setCharacters(json); 
+          setCharacters(json);
         } else {
           setCharacters(null);
         }
-      })      
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -31,9 +31,9 @@ function App() {
     return fetch(`${API_PREFIX}/login`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(creds)
+      body: JSON.stringify(creds),
     })
       .then((response) => {
         if (response.status === 200) {
@@ -42,7 +42,9 @@ function App() {
             return true;
           });
         } else {
-          setMessage(`Login Error: ${ error }, json information ${JSON.stringify(creds)}`);
+          setMessage(
+            `Login Error: ${error}, json information ${JSON.stringify(creds)}`,
+          );
           return false;
         }
       })
@@ -51,39 +53,44 @@ function App() {
         return false;
       });
   }
-  
+
   function signupUser(creds) {
     setMessage("");
     const formattedCreds = {
-      email: creds.email,              
-      password: creds.pwd,              
-      confirmPassword: creds.confirmPwd 
+      email: creds.email,
+      password: creds.pwd,
+      confirmPassword: creds.confirmPwd,
     };
     return fetch(`${API_PREFIX}/signup`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formattedCreds)
+      body: JSON.stringify(formattedCreds),
     })
-    .then((response) => {
-      if (response.status === 201) {
-        return response.json().then((payload) => {
-          setToken(payload.token);
-          setMessage(`Signup successful for user: ${creds.email}! Please use this code in your authenticator app to connect your PiggyPass Account: ${payload.totp_secret}`);
-        });
-      } else {
-        return response.json().then((errorData) => {
-          const errorMessage = errorData.message || errorData.errors?.map(e => e.msg).join(", ");
-          setMessage(`Invalid input Signup error: ${errorMessage}`);
-        });
-      }
-    })
-    .catch((error) => {
-      setMessage(`Signup Error: ${error.message}\nJSON: ${JSON.stringify(creds)}`);
-    });
+      .then((response) => {
+        if (response.status === 201) {
+          return response.json().then((payload) => {
+            setToken(payload.token);
+            setMessage(
+              `Signup successful for user: ${creds.email}! Please use this code in your authenticator app to connect your PiggyPass Account: ${payload.totp_secret}`,
+            );
+          });
+        } else {
+          return response.json().then((errorData) => {
+            const errorMessage =
+              errorData.message ||
+              errorData.errors?.map((e) => e.msg).join(", ");
+            setMessage(`Invalid input Signup error: ${errorMessage}`);
+          });
+        }
+      })
+      .catch((error) => {
+        setMessage(
+          `Signup Error: ${error.message}\nJSON: ${JSON.stringify(creds)}`,
+        );
+      });
   }
-  
 
   function addAuthHeader(otherHeaders = {}) {
     if (token === INVALID_TOKEN) {
@@ -91,7 +98,7 @@ function App() {
     } else {
       return {
         ...otherHeaders,
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       };
     }
   }
@@ -103,12 +110,15 @@ function App() {
   }
 
   return (
-    <div className="container">
+    <div>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login handleSubmit={loginUser} />} />
-          <Route path="/signup" element={<SignUp handleSubmit={signupUser} buttonLabel="Sign Up" />} />
+          <Route
+            path="/signup"
+            element={<SignUp handleSubmit={signupUser} buttonLabel="Sign Up" />}
+          />
         </Routes>
       </BrowserRouter>
       <p>{message}</p>

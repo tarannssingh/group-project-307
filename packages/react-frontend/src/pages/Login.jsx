@@ -65,11 +65,7 @@ function Login(props) {
         onChange={handleChange}
       />
 
-      <input
-        type="button"
-        value="Log In"
-        onClick={submitForm}
-      />
+      <input type="button" value="Log In" onClick={submitForm} />
       <p>
         Do you need a PiggyPass Account? <Link to="/signup">Sign Up here!</Link>
       </p>
