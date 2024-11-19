@@ -178,6 +178,6 @@ app.get("/credentials/:username", async (req, res) => {
 
 //GET /api/credentials/search? ---Find credentials based on a website thinking about search bars
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Piggy Pass @ localhost:${port}`);
 });
