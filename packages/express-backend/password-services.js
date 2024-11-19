@@ -106,9 +106,9 @@ const substituteWord = (word) => {
     console.log(stronger)
 }
 
-(() => {
-    substituteWord("myBestPassword")
-})()
+// (() => {
+//     substituteWord("myBestPassword")
+// })()
 
   
 const passwordGenCheck = () => {
@@ -126,8 +126,6 @@ const passwordGenCheck = () => {
         hasNumbers: true,
         titlecased: true,
         separators: "-_",
-        vowels: "аеиоуэюя",
-        consonants: "бвгджзклмнпрстчш"
       });
     
     for(let i = 0; i < splice.length; i++) {
@@ -150,6 +148,16 @@ const passwordGenerator = (pwLength) => {
     return ret
 }
 
+const validUTF8 = (pw) => {
+    try {
+        const encoded = new TextEncoder().encode(pw);
+        const decoded = new TextDecoder().decode(encoded);
+        return decoded === pw;
+    } catch (error) {
+        return false;
+    }
+}
+
 const passwordStrength = (pw) => {
     const criteria = {
         length: false,
@@ -158,6 +166,10 @@ const passwordStrength = (pw) => {
         number: false,
         speChar: false,
     };
+
+    if(!validUTF8(pw)) {
+        return "Invalid";
+    }
 
     if(pw.length >= 14) {
         criteria.length = true;
@@ -192,17 +204,17 @@ const passwordStrength = (pw) => {
 }
 
 // test
-// (async () => {
-//     const weak = await passwordStrength("ooo");
-//     console.log(weak);
-//     const password = await passwordStrength("89y82dh2d0#@$1Es");
-//     console.log(password);
-//     const generator = await passwordGenerator(10);
-//     console.log(generator);
-//     const autoGenerator = await passwordGenCheck();
-//     console.log(autoGenerator);
-//     const autoCheck = await passwordStrength(autoGenerator);
-//     console.log(autoCheck);
-// })()
+(async () => {
+    const weak = await passwordStrength("ooo");
+    console.log(weak);
+    const password = await passwordStrength("89y82dh2d0#@$1Es");
+    console.log(password);
+    const generator = await passwordGenerator(10);
+    console.log(generator);
+    const autoGenerator = await passwordGenCheck();
+    console.log(autoGenerator);
+    const autoCheck = await passwordStrength(autoGenerator);
+    console.log(autoCheck);
+})()
 
 export default {decrypt, encrypt, substituteWord, passwordGenCheck, passwordGenerator, passwordStrength};
