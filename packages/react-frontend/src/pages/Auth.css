@@ -19,7 +19,7 @@
   }
 
   .auth-button {
-    margin: 5rem;
+    min-width: 100%;
   }
   
   .full-container {
@@ -279,7 +279,6 @@
     cursor: pointer;
     text-decoration: none;
     line-height: 1;
-    min-width: 100%;
   }
   
   .button:hover,

@@ -62,6 +62,7 @@ function SignUp(props) {
             type="button"
             value={props.buttonLabel || "Sign Up"}
             onClick={submitForm}
+            className="auth-button"
           />
         </form>
         {/* Display the message here */}
