@@ -1,5 +1,7 @@
 // Login.jsx
 import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import "./Auth.css";
 
 function Login(props) {
   const [creds, setCreds] = useState({
@@ -8,41 +10,69 @@ function Login(props) {
     totp: "",
   });
 
+  const navigate = useNavigate();
+
   function handleChange(event) {
     const { name, value } = event.target;
-    setCreds({ ...creds, [name]: value });
+    switch (name) {
+      case "email":
+        setCreds({ ...creds, email: value });
+        break;
+      case "password":
+        setCreds({ ...creds, password: value });
+        break;
+      case "totp":
+        setCreds({ ...creds, totp: value });
+        break;
+    }
   }
 
   function submitForm() {
-    props.handleSubmit(creds);
+    props.handleSubmit(creds).then((isLoginSuccessful) => {
+      if (isLoginSuccessful) {
+        navigate("/");
+      }
+    });
+
     setCreds({ email: "", password: "", totp: "" }); // Clear form fields
   }
 
   return (
-    <form>
-      <label htmlFor="email">Email</label>
-      <input
-        type="email"
-        name="email"
-        id="email"
-        value={creds.email}
-        onChange={handleChange}
-      />
+    <div className="auth-form">
+      <h2 className="auth-title">Login to PiggyPass</h2>
+      <form>
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          value={creds.email}
+          onChange={handleChange}
+        />
 
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        value={creds.password}
-        onChange={handleChange}
-      />
-      <input
-        type="button"
-        value="Log In"
-        onClick={submitForm}
-      />
-    </form>
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          value={creds.password}
+          onChange={handleChange}
+        />
+
+        <label htmlFor="email">2FA Code</label>
+        <input
+          type="number" //for styling purposes
+          name="totp"
+          id="totp"
+          value={creds.totp}
+          onChange={handleChange}
+        />
+        <input type="button" value="Log In" onClick={submitForm} />
+        <p>
+          Do you need a PiggyPass Account? <Link to="/signup" className="auth-link">Sign Up here!</Link>
+        </p>
+      </form>
+    </div>
   );
 }
 

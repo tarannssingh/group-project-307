@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import Navbar from "./../components/Navbar";
 
 function Home() {
-  return <div>
-      <h1>
-        Home Page Here!
-      </h1>
-    </div>;
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 }
 export default Home;
