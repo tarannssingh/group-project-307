@@ -30,42 +30,48 @@ function SignUp(props) {
   }
 
   return (
-    <div className="auth-form">
-      <h2 className="auth-title">Sign up for PiggyPass</h2>
-      <form>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          value={creds.email}
-          onChange={handleChange}
-        />
-        <label htmlFor="password">Create Password</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          value={creds.pwd}
-          onChange={handleChange}
-        />
-        <label htmlFor="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          id="confirmPassword"
-          value={creds.confirmPwd}
-          onChange={handleChange}
-        />
-        <input
-          type="button"
-          value={props.buttonLabel || "Sign Up"}
-          onClick={submitForm}
-        />
-      </form>
-      <p>
-          Already have a PiggyPass Account? <Link to="/login" className="auth-link">Log In here!</Link>
-      </p>
+    <div className="auth-body">
+      <div className="auth-form">
+        <h2 className="auth-title">Sign up for PiggyPass</h2>
+        <form>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value={creds.email}
+            onChange={handleChange}
+          />
+          <label htmlFor="password">Create Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={creds.pwd}
+            onChange={handleChange}
+          />
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            value={creds.confirmPwd}
+            onChange={handleChange}
+          />
+          <input
+            type="button"
+            value={props.buttonLabel || "Sign Up"}
+            onClick={submitForm}
+          />
+        </form>
+        {/* Display the message here */}
+        {props.message && (
+          <p className="auth-message">{props.message}</p>
+        )}
+        <p>
+            Already have a PiggyPass Account? <Link to="/login" className="auth-link">Log In here!</Link>
+        </p>
+      </div>
     </div>
   );
 }
