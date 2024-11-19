@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 
 function App() {
-  const API_PREFIX = "http://localhost:5478";
+  const API_PREFIX = process.env.API_PREFIX ||   "http://localhost:5478";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [characters, setCharacters] = useState([]);
