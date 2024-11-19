@@ -114,10 +114,15 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login handleSubmit={loginUser} />} />
+          <Route
+            path="/login"
+            element={
+              <Login handleSubmit={loginUser} message={message} setMessage={setMessage} />
+            }
+          />
           <Route
             path="/signup"
-            element={<SignUp handleSubmit={signupUser} buttonLabel="Sign Up" />}
+            element={<SignUp handleSubmit={signupUser} message={message} setMessage={setMessage}/>}
           />
         </Routes>
       </BrowserRouter>
