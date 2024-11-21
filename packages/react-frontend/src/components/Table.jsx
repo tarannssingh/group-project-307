@@ -1,5 +1,5 @@
 // Table.jsx
-import React from 'react';
+import React from "react";
 
 function TableBody({ characterData }) {
   if (characterData === null) {

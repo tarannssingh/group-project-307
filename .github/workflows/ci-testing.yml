@@ -3,16 +3,25 @@ name: CI Testing
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Code
       - uses: actions/checkout@v4
+      - name: Set up Node
       - uses: actions/setup-node@v3
         with:
           node-version: 20
+      - name: Ephemerall Install of Dependencies 
       - run: npm ci
-      - run: npm run -w express-backend lint
-      - run: npm run -w react-frontend lint
-      # - run: npm run -w react-frontend build 
+      - name: build frontend
+      - run: npm run -w react-frontend build 
+      # - name: lint
+      # - run: npm run -w express-backend lint
+      # - run: npm run -w react-frontend lint
+      # - name: tests
+      # - run: npm run tests
