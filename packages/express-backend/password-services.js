@@ -128,8 +128,6 @@ const passwordGenCheck = () => {
     hasNumbers: true,
     titlecased: true,
     separators: "-_",
-    vowels: "аеиоуэюя",
-    consonants: "бвгджзклмнпрстчш",
   });
 
   for (let i = 0; i < splice.length; i++) {
@@ -155,60 +153,74 @@ const passwordGenerator = (pwLength) => {
   return ret;
 };
 
-function passwordStrength(pw) {
-  const criteria = {
-    length: false,
-    uppercase: false,
-    lowercase: false,
-    number: false,
-    speChar: false,
-  };
+const validUTF8 = (pw) => {
+    try {
+        const encoded = new TextEncoder().encode(pw);
+        const decoded = new TextDecoder().decode(encoded);
+        return decoded === pw;
+    } catch (error) {
+        return false;
+    }
+}
 
-  if (pw.length >= 14) {
-    criteria.length = true;
-  }
-  if (/[A-Z]/.test(pw)) {
-    criteria.uppercase = true;
-  }
-  if (/[a-z]/.test(pw)) {
-    criteria.lowercase = true;
-  }
-  if (/\d/.test(pw)) {
-    criteria.number = true;
-  }
-  if (/[$@!%*?&]/.test(pw)) {
-    criteria.speChar = true;
-  }
-  const met = Object.values(criteria).filter(Boolean).length;
-  switch (met) {
-    case 1:
-      return "Weak";
-    case 2:
-      return "Middling";
-    case 3:
-      return "Moderate";
-    case 4:
-      return "Strong";
-    case 5:
-      return "Very Strong";
-    default:
-      return "Invalid";
-  }
+const passwordStrength = (pw) => {
+    const criteria = {
+        length: false,
+        uppercase: false,
+        lowercase: false,
+        number: false,
+        speChar: false,
+    };
+
+    if(!validUTF8(pw)) {
+        return "Invalid";
+    }
+
+    if(pw.length >= 14) {
+        criteria.length = true;
+    }
+    if(/[A-Z]/.test(pw)) {
+        criteria.uppercase = true;
+    }
+    if(/[a-z]/.test(pw)) {
+        criteria.lowercase = true;
+    }
+    if(/\d/.test(pw)) {
+        criteria.number = true;
+    }
+    if(/[!@#$%^&*]/.test(pw)) {
+        criteria.speChar = true;
+    }
+    const met = Object.values(criteria).filter(Boolean).length;
+    switch(met) {
+        case 1:
+            return "Weak";
+        case 2:
+            return "Middling";
+        case 3:
+            return "Moderate"
+        case 4:
+            return "Strong"
+        case 5:
+            return "Very Strong"
+        default:
+            return "Invalid"
+    }
 }
 
 // test
-// (async () => {
-//     const weak = await passwordStrength("ooo");
-//     console.log(weak);
-//     const password = await passwordStrength("89y82dh2d0#@$1Es");
-//     console.log(password);
-//     const generator = await passwordGenerator(10);
-//     console.log(generator);
-//     const autoGenerator = await passwordGenCheck();
-//     console.log(autoGenerator);
-//     const autoCheck = await passwordStrength(autoGenerator);
-//     console.log(autoCheck);
-// })()
+(async () => {
+    const weak = await passwordStrength("ooo");
+    console.log(weak);
+    const password = await passwordStrength("89y82dh2d0#@$1Es");
+    console.log(password);
+    const generator = await passwordGenerator(10);
+    console.log(generator);
+    const autoGenerator = await passwordGenCheck();
+    console.log(autoGenerator);
+    const autoCheck = await passwordStrength(autoGenerator);
+    console.log(autoCheck);
+})()
 
 export default {
   decrypt,
