@@ -131,6 +131,7 @@ function App() {
       </BrowserRouter>
       <p>{message}</p>
       <Create/>
+      <Credential/>
     </div>
   );
 }
