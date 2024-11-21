@@ -18,17 +18,6 @@
     border-radius: 25px;
   }
 
-  .auth-link {
-    color: inherit;
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  .auth-link:hover {
-    color: inherit;
-    text-decoration: underline;
-  }
-
   .auth-button {
     min-width: 100%;
   }
@@ -216,7 +205,7 @@
     border: 1px solid #DB733F;
     box-shadow:
       inset 0 1px 1px rgba(0, 0, 0, 0.1),
-      0 0 6px #e6a07e;
+      0 0 6px #DB733F;
   }
   
   textarea {
@@ -237,7 +226,6 @@
     display: block;
     margin: 1rem 0 0.5rem;
   }
-
 
   @media (min-width: 600px) {
     .split-form label {

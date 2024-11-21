@@ -1,4 +1,4 @@
-import Dropdown from "react-bootstrap/Dropdown";
+import Form from 'react-bootstrap/Form';
 
 export default function Navbar() {
   return (
@@ -10,25 +10,22 @@ export default function Navbar() {
         <h1>
           <strong>PiggyPass</strong>
         </h1>
-        <div className="d-flex justify-content-center w-50">
-          <Dropdown>
-            <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-              Search By
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Website</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Username</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+        <div className="d-flex justify-content-center align-items-center w-50">
           <form className="px-1 d-flex align-items-center w-100">
+            <div className="select w-50 me-2">
+              <Form.Select aria-label="Default select example">
+                <option>Search By</option>
+                <option value="1">Website</option>
+                <option value="2">Username</option>
+              </Form.Select>
+            </div>
             <input
-              className="form-control me-2"
+              className="form-control me-2 m-0"
               type="search"
               placeholder="Search"
               aria-label="Search"
             />
-            <button className="btn btn-secondary" type="submit">
+            <button className="btn bg-white" type="submit">
               Search
             </button>
           </form>
