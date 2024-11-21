@@ -3,9 +3,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
+import Credential from "./components/credential/credential";
+import Create from "./components/create/create"
 
 function App() {
-  const API_PREFIX = process.env.API_PREFIX ||   "http://localhost:5478";
+  // process.env.API_PREFIX ||  
+  const API_PREFIX =  "http://localhost:5478";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [characters, setCharacters] = useState([]);
@@ -127,6 +130,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       <p>{message}</p>
+      <Create/>
     </div>
   );
 }
