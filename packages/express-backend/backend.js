@@ -5,7 +5,7 @@ import userServicies from "./user-services.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import credentials from "./credential.js";
-import * as CredentialService from "./credential-services.js";
+import CredentialService from "./credential-services.js";
 import User from "./user.js";
 
 dotenv.config();
@@ -151,8 +151,7 @@ app.get("/credentials/:website", async (req, res) => {
 });
 
 // GET /api/credentials/:website-- retrive credential based on website searched
-
-app.get("/credentials/:username", async (req, res) => {
+app.get("/credentials/username/:username", async (req, res) => {
   const { username } = req.params;
   try {
     const credential =
@@ -178,6 +177,6 @@ app.get("/credentials/:username", async (req, res) => {
 
 //GET /api/credentials/search? ---Find credentials based on a website thinking about search bars
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Piggy Pass @ localhost:${port}`);
 });

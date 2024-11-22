@@ -36,8 +36,8 @@ async function findCredentialByUsername(username) {
 //retruns all credentials
 async function findAllCredentials() {
   try {
-    const credentials = await credentials.find({});
-    return credentials;
+    const allCredentials = await credentials.find({}); //fixed naming
+    return allCredentials;
   } catch (error) {
     throw new Error(`Error retrieving all credentials: ${error.message}`);
   }
@@ -53,5 +53,4 @@ export default {
   findCredentialByWebsite,
   findCredentialByUsername,
   // findCredentialByUsernameAndWebsite,
-  findAllCredentials,
 };
