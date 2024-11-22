@@ -8,7 +8,7 @@ export default function Navbar() {
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     if(!query.trim()) {
       setError("Please enter a search query");
@@ -27,12 +27,12 @@ export default function Navbar() {
         url = `${API_PREFIX}/credentials/username/${query}`;
       }
 
-      const response = fetch(url);
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error("No credentials found for the given search query.");
       }
 
-      const data = response.json();
+      const data = await response.json();
       setResults(Array.isArray(data) ? data : [data]); // Handle single or multiple results
     } catch (err) {
       setResults([]);
@@ -87,18 +87,16 @@ export default function Navbar() {
         </a>
       </nav>
       <div className="mt-3">
-        {error && <p className="text-danger">{error}</p>}
-        {results.length > 0 ? (
-          results.map((result, index) => (
-            <div key={index} className="mb-2">
-              <p><strong>Website:</strong> {result.website}</p>
-              <p><strong>Username:</strong> {result.username}</p>
-              <p><strong>Password:</strong> {result.password}</p>
-            </div>
-          ))
-        ) : (
-          query && !error && <p>No results found</p>
-        )}
+      {error && <p className="text-danger">{error}</p>}
+      {results.length > 0 && (
+        results.map((result, index) => (
+          <div key={index} className="mb-3">
+            <p><strong>Website:</strong> {result.website}</p>
+            <p><strong>Username:</strong> {result.username}</p>
+            <p><strong>Password:</strong> {result.password}</p>
+          </div>
+        ))
+      )}
       </div>
     </div>
   );
