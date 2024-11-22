@@ -3,12 +3,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
-import Credential from "./components/credential/credential";
-import Create from "./components/create/create"
+import Profile from "./pages/Profile";
+import Logout from "./pages/Logout";
+import DeleteAccount from "./pages/DeleteAccount"
+// import Credential from "./components/credential/credential";
+// import Create from "./components/create/create"
 
 function App() {
-  // process.env.API_PREFIX ||  
-  const API_PREFIX =  "http://localhost:5478";
+  const API_PREFIX = "http://localhost:5478";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [characters, setCharacters] = useState([]);
@@ -19,81 +21,67 @@ function App() {
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
         if (json) {
-          setCharacters(json);
+          setCharacters(json); 
         } else {
           setCharacters(null);
         }
-      })
+      })      
       .catch((error) => {
         console.log(error);
       });
   }, [token]);
 
   function loginUser(creds) {
-    setMessage("");
     return fetch(`${API_PREFIX}/login`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(creds),
+      body: JSON.stringify(creds)
     })
       .then((response) => {
         if (response.status === 200) {
           return response.json().then((payload) => {
             setToken(payload.token);
-            return true;
+            setMessage("Login successful; auth token saved");
           });
         } else {
-          setMessage(
-            `Login Error: ${error}, json information ${JSON.stringify(creds)}`,
-          );
-          return false;
+          setMessage(`Login Error ${JSON.stringify(creds)}`);
         }
       })
       .catch((error) => {
         setMessage(`Login Error: ${error}`);
-        return false;
       });
   }
-
+  
   function signupUser(creds) {
-    setMessage("");
     const formattedCreds = {
-      email: creds.email,
-      password: creds.pwd,
-      confirmPassword: creds.confirmPwd,
+      email: creds.email,              
+      password: creds.pwd,              
+      confirmPassword: creds.confirmPwd 
     };
     return fetch(`${API_PREFIX}/signup`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(formattedCreds),
+      body: JSON.stringify(formattedCreds)
     })
-      .then((response) => {
-        if (response.status === 201) {
-          return response.json().then((payload) => {
-            setToken(payload.token);
-            setMessage(
-              `Signup successful for user: ${creds.email}! Please use this code in your authenticator app to connect your PiggyPass Account: ${payload.totp_secret}`,
-            );
-          });
-        } else {
-          return response.json().then((errorData) => {
-            const errorMessage =
-              errorData.message ||
-              errorData.errors?.map((e) => e.msg).join(", ");
-            setMessage(`Invalid input Signup error: ${errorMessage}`);
-          });
-        }
-      })
-      .catch((error) => {
-        setMessage(
-          `Signup Error: ${error.message}\nJSON: ${JSON.stringify(creds)}`,
-        );
-      });
+    .then((response) => {
+      if (response.status === 201) {
+        return response.json().then((payload) => {
+          setToken(payload.token);
+          setMessage(`Signup successful for user: ${creds.email}; auth token saved`);
+        });
+      } else {
+        setMessage(`Invalid input signup error: ${response.status} \n${errorMessage}`);
+      }
+    })
+    .catch((error) => {
+      setMessage(`Signup Error: ${error.message}\nJSON: ${JSON.stringify(creds)}`);
+    });
   }
+  
 
   function addAuthHeader(otherHeaders = {}) {
     if (token === INVALID_TOKEN) {
@@ -101,37 +89,30 @@ function App() {
     } else {
       return {
         ...otherHeaders,
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       };
     }
   }
 
   function fetchUsers() {
-    return fetch(`${API_PREFIX}/users`, {
+    return fetch(`${API_PREFIX}/api/credentials`, {
       headers: addAuthHeader(),
     });
   }
 
   return (
-    <div>
+    <div className="container">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/login"
-            element={
-              <Login handleSubmit={loginUser} message={message} setMessage={setMessage} />
-            }
-          />
-          <Route
-            path="/signup"
-            element={<SignUp handleSubmit={signupUser} message={message} setMessage={setMessage}/>}
-          />
+          <Route path="/login" element={<Login handleSubmit={loginUser} />} />
+          <Route path="/signup" element={<SignUp handleSubmit={signupUser} buttonLabel="Sign Up" />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/deleteAccount" element={<DeleteAccount />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </BrowserRouter>
       <p>{message}</p>
-      <Create/>
-      <Credential/>
     </div>
   );
 }

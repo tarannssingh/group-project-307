@@ -33,14 +33,31 @@ export default function Navbar() {
             </button>
           </form>
         </div>
-        <a href="/settings">
-          <img
-            src="./../../public/gear-fill.svg"
-            alt="settings icon"
-            width="32"
-            height="32"
-          ></img>
-        </a>
+        <Dropdown>
+          <Dropdown.Toggle
+            variant="secondary"
+            id="dropdown-basic"
+            style={{
+              border: "none",          // Remove border for a cleaner look
+              background: "transparent", // Remove background color
+              padding: 0,             // Remove padding to ensure it's tightly wrapped around the icon
+              position: "relative",    // Ensures the icon aligns correctly
+            }}
+          >
+            <img
+              src="./../../public/gear-fill.svg"
+              alt="settings icon"
+              width="32"
+              height="32"
+            />
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item href="/profile">Profile</Dropdown.Item>
+            <Dropdown.Item href="/deleteAccount">Delete Account</Dropdown.Item>
+            <Dropdown.Item href="/logout">Logout</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </nav>
     </div>
   );
