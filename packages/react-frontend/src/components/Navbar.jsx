@@ -38,10 +38,10 @@ export default function Navbar() {
             variant="secondary"
             id="dropdown-basic"
             style={{
-              border: "none",          // Remove border for a cleaner look
-              background: "transparent", // Remove background color
-              padding: 0,             // Remove padding to ensure it's tightly wrapped around the icon
-              position: "relative",    // Ensures the icon aligns correctly
+              border: "none",          
+              background: "transparent", 
+              padding: 0,            
+              position: "relative",    
             }}
           >
             <img
