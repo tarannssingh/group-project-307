@@ -8,9 +8,9 @@ import {
   } from "@/components/ui/dialog"
   import {
     Card,
-    CardContent,
+    // CardContent,
     CardDescription,
-    CardFooter,
+    // CardFooter,
     CardHeader,
     CardTitle,
   } from "@/components/ui/card"
