@@ -108,7 +108,7 @@ app.post("/credentials", userServicies.authenticateUser, async (req, res) => {
 });
 
 //DELETE /api/credentials/:id ---deletes a credential by ID
-app.delete("/credentials/:id", async (req, res) => {
+app.delete("/credentials/:id", userServicies.authenticateUser, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -127,9 +127,12 @@ app.delete("/credentials/:id", async (req, res) => {
 });
 
 // GET /api/credentials ---Retrieve ALL credentials, including passwords
-app.get("/credentials/all", async (req, res) => {
+app.get("/credentials", userServicies.authenticateUser, async (req, res) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]
+  
   try {
-    const credentials = await CredentialService.findAllCredentials();
+    const credentials = await CredentialService.findAllCredentials(req.user_id);
     res.status(200).json(credentials);
   } catch (error) {
     res
@@ -139,7 +142,7 @@ app.get("/credentials/all", async (req, res) => {
 });
 
 // GET /api/credentials/:website-- retrive credential based on website searched
-app.get("/credentials/:website", async (req, res) => {
+app.get("/credentials/:website", userServicies.authenticateUser, async (req, res) => {
   const { website } = req.params;
   try {
     const credential = await CredentialService.findCredentialByWebsite(website);
@@ -160,7 +163,7 @@ app.get("/credentials/:website", async (req, res) => {
 
 // GET /api/credentials/:website-- retrive credential based on website searched
 
-app.get("/credentials/:username", async (req, res) => {
+app.get("/credentials/:username", userServicies.authenticateUser, async (req, res) => {
   const { username } = req.params;
   try {
     const credential =

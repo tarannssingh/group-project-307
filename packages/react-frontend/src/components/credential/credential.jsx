@@ -16,7 +16,7 @@ import {
   } from "@/components/ui/card"
 import { useEffect, useState } from "react";
 
-  const Credential = () => {
+  const Credential = ({username, website, password}) => {
     const [credential, setCredential] = useState({
         "username": "",
         "website": "",
@@ -24,13 +24,17 @@ import { useEffect, useState } from "react";
         })
     useEffect(() => {
         const json = {
-            "username": "john_doe",
-            "website": "example.com",
-            "password": "securepassword123"
+            "username": username,
+            "website": website,
+            "password": password
             }
         setCredential(json)
     }, [])
-    
+    const response = await fetch(`${API_PREFIX}/credentials`, {
+        method: "POST",
+        headers: addAuthHeader({"Content-Type": "application/json"}),
+        body: JSON.stringify({...values, user_id: decoded.sub})
+    })
 
     return (
         <>
