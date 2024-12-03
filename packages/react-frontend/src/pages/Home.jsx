@@ -46,9 +46,9 @@ function Home() {
       <Navbar />
       {/* here is where we create the dashboard */}
       <Create/>
-      {logins.map(() => {
+      {/* {logins.map(() => {
         <Credential username="" website="" password=""/>
-      })}
+      })} */}
     </div>
   );
 }
