@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import eyeIcon from "../../assets/eye_icon.svg";
 
-const pswInput = ({id, placeholder}) => {
-    const [isVisble, setIsVisible] = useState(false);
+const pswInput = ({ id, placeholder }) => {
+    const [isVisible, setIsVisible] = useState(false);
     const toggleVis = () => {
         setIsVisible((prev) => !prev)
     };
@@ -16,8 +17,8 @@ const pswInput = ({id, placeholder}) => {
             />
             <button
                 type="button"
-                onClick={toggleVisibility}
-                aria-label={isVisible ? altTextHide : altTextShow}
+                onClick={toggleVis}
+                aria-label={isVisible ? "Hide Password" : "Show Password"}
                 style={{
                     border: "none",
                     background: "none",
@@ -26,8 +27,8 @@ const pswInput = ({id, placeholder}) => {
                 }}
             >
                 <img
-                    src={isVisible ? hideIcon : showIcon}
-                    alt={isVisible ? altTextHide : altTextShow}
+                    src={eyeIcon}
+                    alt={isVisible ? "Hide Password" : "Show Password"}
                     style={{ width: "20px", height: "20px" }}
                 />
             </button>
