@@ -20,6 +20,7 @@
     "prettier": "^3.3.3"
   },
   "dependencies": {
+    "@shadcn/ui": "^0.0.4",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "dotenv": "^16.4.5",

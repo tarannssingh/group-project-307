@@ -36,8 +36,8 @@ async function findCredentialByUsername(username, user_id) {
 //retruns all credentials
 async function findAllCredentials(user_id) {
   try {
-    const credentials = await credentials.find({user_id});
-    return credentials;
+    const allCredentials = await credentials.find({user_id});
+    return allCredentials;
   } catch (error) {
     throw new Error(`Error retrieving all credentials: ${error.message}`);
   }

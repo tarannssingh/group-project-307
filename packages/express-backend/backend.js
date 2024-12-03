@@ -5,7 +5,7 @@ import userServicies from "./user-services.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import credentials from "./credential.js";
-import * as CredentialService from "./credential-services.js";
+import CredentialService from "./credential-services.js";
 import User from "./user.js";
 
 dotenv.config();
