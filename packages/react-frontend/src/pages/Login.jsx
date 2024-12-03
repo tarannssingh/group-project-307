@@ -33,12 +33,12 @@ function Login(props) {
         navigate("/");
       }
     });
-    setMessage("");
+    props.setMessage("");
     setCreds({...creds, password: "", totp: "" }); // Clear form fields
   }
 
   function changePage() {
-    setMessage("");
+    props.setMessage("");
   }
 
   return (

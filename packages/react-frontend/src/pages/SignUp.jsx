@@ -26,11 +26,12 @@ function SignUp(props) {
 
   function submitForm() {
     props.handleSubmit(creds);
+    props.setMessage("");
     setCreds({ email: "", pwd: "", confirmPwd: "" });
   }
 
   function changePage() {
-    setMessage("");
+    props.setMessage("");
   }
 
   return (
