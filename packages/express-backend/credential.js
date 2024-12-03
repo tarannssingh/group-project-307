@@ -1,5 +1,5 @@
 //MongoDB schema and model for Credentials
-import mongoose from "mongoose";
+import mongoose, {ObjectId} from "mongoose";
 
 const credentialSchema = new mongoose.Schema(
   {
@@ -17,6 +17,10 @@ const credentialSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    user_id : {
+      type: ObjectId,
+      required: true,
+    }
   },
   { collection: "credentials" },
 );

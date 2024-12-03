@@ -4,7 +4,6 @@
   "main": "backend.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon backend.js",
     "lint": "eslint './*.{js,ts}'"
   },
@@ -26,7 +25,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
-    "eslint": "^9.14.0",
+    "eslint": "^8.2.0",
     "globals": "^14.0.0"
   }
 }
