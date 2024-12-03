@@ -31,7 +31,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useState } from "react"
-import { addAuthHeader, API_PREFIX } from "../../utils"
+//import { addAuthHeader, API_PREFIX } from "../../utils"
 import { jwtDecode } from "jwt-decode"
  
 const formSchema = z.object ({
@@ -81,7 +81,7 @@ const Create = () => {
         <div>
             <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Card className="cursor-pointer transition-colors duration-300">
+                <Card className="transition-colors duration-300 cursor-pointer">
                     <CardHeader>
                         <CardTitle>Add Credential</CardTitle>
                     </CardHeader>
@@ -157,6 +157,6 @@ export default Create
 
 // {/* Render One Error at the Bottom */}
 // {form.formState.errors && (
-//     <p className="text-red-500 text-sm mt-4">
+//     <p className="mt-4 text-sm text-red-500">
 //       {Object.values(form.formState.errors)[0]?.message}
 //     </p>
