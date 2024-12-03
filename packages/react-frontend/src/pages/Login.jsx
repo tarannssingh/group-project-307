@@ -34,7 +34,7 @@ function Login(props) {
       }
     });
 
-    setCreds({ email: "", password: "", totp: "" }); // Clear form fields
+    setCreds({...creds, password: "", totp: "" }); // Clear form fields
   }
 
   return (

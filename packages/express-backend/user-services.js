@@ -97,6 +97,31 @@ const validateTotp = (secret, token) => {
   });
 };
 
+const authenticateUser = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]
+
+  if (!token) {
+    return res.status(401).json({
+      message: "Failed to authenticate user. Please login or signup."
+    })
+  } else {
+    jwt.verify(
+      token,
+      process.env.JWT_SIGNING_SECRET,
+      (error, decoded) => {
+        if (decoded) {
+          next();
+        } else {
+          return res.status(401).json({
+            message: error
+          })
+        }
+      }
+    )
+  }
+}
+
 const login = async (email, password, totp) => {
   // validate user
   let user = await User.find({ email });
