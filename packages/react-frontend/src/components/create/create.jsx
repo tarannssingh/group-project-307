@@ -31,7 +31,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useState } from "react"
-//import { addAuthHeader, API_PREFIX } from "../../utils"
+import { addAuthHeader, API_PREFIX } from "../../utils"
 import { jwtDecode } from "jwt-decode"
  
 const formSchema = z.object ({

@@ -16,7 +16,7 @@ import {
   } from "@/components/ui/card"
 import { useEffect, useState } from "react";
 
-  const Credential = ({username, website, password}) => {
+  const Credential = async ({username, website, password}) => {
     const [credential, setCredential] = useState({
         "username": "",
         "website": "",
@@ -41,7 +41,7 @@ import { useEffect, useState } from "react";
         <div>
             <Dialog>
             <DialogTrigger asChild>
-                <Card className="cursor-pointer transition-colors duration-300">
+                <Card className="transition-colors duration-300 cursor-pointer">
                     <CardHeader>
                         <CardTitle>{credential.website}</CardTitle>
                         <CardDescription className="text-yellow-400 ">{credential.username}</CardDescription>

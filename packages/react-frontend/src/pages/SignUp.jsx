@@ -29,6 +29,10 @@ function SignUp(props) {
     setCreds({ email: "", pwd: "", confirmPwd: "" });
   }
 
+  function changePage() {
+    setMessage("");
+  }
+
   return (
     <div className="auth-body">
       <div className="auth-form">
@@ -64,14 +68,17 @@ function SignUp(props) {
             onClick={submitForm}
             className="auth-button"
           />
+          <p className="py-2">
+            Already have a PiggyPass Account?{" "}
+            <Link to="/login" className="auth-link" onClick={changePage}>
+               Log In here!
+            </Link>
+          </p>
         </form>
         {/* Display the message here */}
         {props.message && (
           <p className="auth-message">{props.message}</p>
         )}
-        <p>
-            Already have a PiggyPass Account? <Link to="/login" className="auth-link">Log In here!</Link>
-        </p>
       </div>
     </div>
   );
