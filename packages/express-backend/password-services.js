@@ -209,18 +209,18 @@ const passwordStrength = (pw) => {
 }
 
 // test
-(async () => {
-    const weak = await passwordStrength("ooo");
-    console.log(weak);
-    const password = await passwordStrength("89y82dh2d0#@$1Es");
-    console.log(password);
-    const generator = await passwordGenerator(10);
-    console.log(generator);
-    const autoGenerator = await passwordGenCheck();
-    console.log(autoGenerator);
-    const autoCheck = await passwordStrength(autoGenerator);
-    console.log(autoCheck);
-})()
+// (async () => {
+//     const weak = await passwordStrength("ooo");
+//     console.log(weak);
+//     const password = await passwordStrength("89y82dh2d0#@$1Es");
+//     console.log(password);
+//     const generator = await passwordGenerator(10);
+//     console.log(generator);
+//     const autoGenerator = await passwordGenCheck();
+//     console.log(autoGenerator);
+//     const autoCheck = await passwordStrength(autoGenerator);
+//     console.log(autoCheck);
+// })()
 
 export default {
   decrypt,
