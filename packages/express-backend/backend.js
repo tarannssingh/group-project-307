@@ -84,17 +84,25 @@ app.get("/users", async (req, res) => {
 //CREDENTIAL ENDPOINTS
 
 //POST /api/credential endpoint -- accept username, website and password
-app.post("/credentials/add", async (req, res) => {
-  const { username, password, website } = req.body;
-  console.log(req.body);
+app.post("/credentials", userServicies.authenticateUser, async (req, res) => {
+  const { username, password, website, user_id} = req.body;
   try {
     //save the credential
-    const credential = new credentials({ username, website, password });
+    if ((await credentials.findOne({ website, username, user_id }))){
+      return res
+        .status(409)
+        .json({
+          error: "Username and Website combination already exist. Update instead."
+        })
+    }
+
+    const credential = new credentials({ username, website, password, user_id});
     await credential.save();
     res
       .status(201)
       .json({ message: "Credential stored successfully", id: credential.id });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Error saving credential" });
   }
 });

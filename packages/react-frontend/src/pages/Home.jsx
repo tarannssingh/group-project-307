@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 
+
 function Home() {
   const navigate = useNavigate();
-
   useEffect(() => {
     try {
       const token = sessionStorage.getItem('token')

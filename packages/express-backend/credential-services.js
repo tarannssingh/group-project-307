@@ -4,9 +4,9 @@ import credentials from "./credential.js";
 mongoose.set("debug", true);
 
 // Function to find credentials by website
-async function findCredentialByWebsite(website) {
+async function findCredentialByWebsite(website, user_id) {
   try {
-    const credential = await credentials.findOne({ website });
+    const credential = await credentials.findOne({ website, user_id });
     return credential;
   } catch (error) {
     throw new Error(`Error finding credential by website: ${error.message}`);
@@ -14,9 +14,9 @@ async function findCredentialByWebsite(website) {
 }
 
 // Function to find credentials by username
-async function findCredentialByUsername(username) {
+async function findCredentialByUsername(username, user_id) {
   try {
-    const credential = await credentials.findOne({ username });
+    const credential = await credentials.findOne({ user_id, username });
     return credential;
   } catch (error) {
     throw new Error(`Error finding credential by username: ${error.message}`);
@@ -34,9 +34,9 @@ async function findCredentialByUsername(username) {
 // }
 
 //retruns all credentials
-async function findAllCredentials() {
+async function findAllCredentials(user_id) {
   try {
-    const credentials = await credentials.find({});
+    const credentials = await credentials.find({user_id});
     return credentials;
   } catch (error) {
     throw new Error(`Error retrieving all credentials: ${error.message}`);
@@ -53,5 +53,4 @@ export default {
   findCredentialByWebsite,
   findCredentialByUsername,
   // findCredentialByUsernameAndWebsite,
-  findAllCredentials,
 };

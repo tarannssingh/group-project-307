@@ -145,6 +145,6 @@ const login = async (email, password, totp) => {
   // jwt.sign({user._id })
 };
 
-export default { accessValidators, loginValidators, signup, login };
+export default { accessValidators, loginValidators, signup, login, authenticateUser};
 
 // KBFEG3RON42FOTLLINYW22LUHFWES4ZY

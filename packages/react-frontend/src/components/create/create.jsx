@@ -30,6 +30,9 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { useState } from "react"
+import { addAuthHeader, API_PREFIX } from "../../utils"
+import { jwtDecode } from "jwt-decode"
  
 const formSchema = z.object ({
     website: z.string().url(),
@@ -39,7 +42,10 @@ const formSchema = z.object ({
 })
 
 const Create = () => {
-      const form = useForm({
+    const [message, setMessage] = useState("")
+    const [open, setOpen] = useState(false);
+
+    const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             website: "",
@@ -48,18 +54,36 @@ const Create = () => {
         }
       })
 
-      const onSubmit = (values) => {
-        console.log(values)
-      }
+    const handleSubmit = async (values) => {
+        try {
+            const token = sessionStorage.getItem("token")
+            const decoded = jwtDecode(token)
+            const response = await fetch(`${API_PREFIX}/credentials`, {
+                method: "POST",
+                headers: addAuthHeader({"Content-Type": "application/json"}),
+                body: JSON.stringify({...values, user_id: decoded.sub})
+            })
+            const json = await response.json()
+            if (!response.ok) {
+                throw Error(json.error)
+            } else {
+                setOpen(false)
+                form.reset()
+            }
+            setMessage("")
+        } catch (error) {
+            setMessage(error.message)
+        }
+    }
 
     return (
         <>
         <div>
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Card className="cursor-pointer transition-colors duration-300">
                     <CardHeader>
-                        <CardTitle>Add Password</CardTitle>
+                        <CardTitle>Add Credential</CardTitle>
                     </CardHeader>
                 </Card>
             </DialogTrigger>
@@ -73,7 +97,7 @@ const Create = () => {
                 <DialogDescription>
                 <div>
                     <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
                         <FormField
                         control={form.control}
                         name="website"
@@ -113,6 +137,9 @@ const Create = () => {
                         />
                         <Button type="submit" className="bg-red-600">Submit</Button>
                     </form>
+                    <p className="pt-4">
+                        {message}
+                    </p>
                     </Form>
                 </div>
                 </DialogDescription>
