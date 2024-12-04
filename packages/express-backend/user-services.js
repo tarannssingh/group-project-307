@@ -116,10 +116,14 @@ const authenticateUser = (req, res, next) => {
           }
           req.body.jwt = decoded
           next();
-        } else {
-          return res.status(401).json({
-            message: error
-          })
+        } 
+        if (error) {
+          console.error("JWT verification failed:", error.message);
+          return res.status(401).json(
+            {
+              message: "Invalid or expired token. Please login again."
+            }
+          );
         }
       }
     )
@@ -141,7 +145,7 @@ const login = async (email, password, totp) => {
     throw Error("Invalid TOTP. Please try again.");
   }
   const payload = {
-    sub: user._id,
+    user_id: user._id,
     email: user.email,
   };
   // after validating generate jwt
