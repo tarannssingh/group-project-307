@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import credentials from "./credential.js";
 import CredentialService from "./credential-services.js";
 import User from "./user.js";
+import passwordServices from "./password-services.js";
 
 dotenv.config();
 
@@ -96,7 +97,7 @@ app.post("/credentials", userServicies.authenticateUser, async (req, res) => {
         })
     }
 
-    const credential = new credentials({ username, website, password, user_id});
+    const credential = new credentials({ username, website, password: await passwordServices.encrypt(password), user_id});
     await credential.save();
     res
       .status(201)
@@ -125,7 +126,7 @@ app.put("/credentials", userServicies.authenticateUser, async (req, res) => {
           error: "A record already exists with this username for this website. Please update that record instead."
         })
     }
-    const credential = await credentials.findOneAndUpdate({_id, user_id: req.body.jwt.sub, website}, {username, password});
+    const credential = await credentials.findOneAndUpdate({_id, user_id: req.body.jwt.sub, website}, {username, password: await passwordServices.encrypt(password)});
     return res.status(204).json({ message: "Credential updated successfully", id: credential.id });
   } catch (error) {
     console.log(error);
@@ -153,7 +154,8 @@ app.delete("/credentials", userServicies.authenticateUser, async (req, res) => {
 // GET /api/credentials ---Retrieve ALL credentials, including passwords
 app.get("/credentials", userServicies.authenticateUser, async (req, res) => {
   try {
-    const credentials = await CredentialService.findAllCredentials(req.body.jwt.sub);
+    let credentials = await CredentialService.findAllCredentials(req.body.jwt.sub);
+    credentials = await Promise.all (credentials.map(async (c) => {c.password = await passwordServices.decrypt(c.password); return c }))
     res.status(200).json(credentials);
   } catch (error) {
     res
