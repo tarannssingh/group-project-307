@@ -6,7 +6,7 @@ mongoose.set("debug", true);
 // Function to find credentials by website
 async function findCredentialByWebsite(website, user_id) {
   try {
-    const credential = await credentials.findOne({ website, user_id });
+    const credential = await credentials.find({ website, user_id });
     return credential;
   } catch (error) {
     throw new Error(`Error finding credential by website: ${error.message}`);

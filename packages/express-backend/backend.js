@@ -167,9 +167,8 @@ app.get("/credentials", userServicies.authenticateUser, async (req, res) => {
 // GET /api/credentials/:website-- retrive credential based on website searched
 app.get("/credentials/:website", userServicies.authenticateUser, async (req, res) => {
   const website = decodeURIComponent(req.params.website);
-  const { user_id } = req;
   try {
-    const credential = await CredentialService.findCredentialByWebsite(website, user_id);
+    const credential = await CredentialService.findCredentialByWebsite(website, req.body.jwt.sub);
     if (credential) {
       res.status(200).json(credential);
     } else {
@@ -188,10 +187,9 @@ app.get("/credentials/:website", userServicies.authenticateUser, async (req, res
 // GET /api/credentials/:website-- retrive credential based on website searched
 app.get("/credentials/username/:username", userServicies.authenticateUser, async (req, res) => {
   const { username } = req.params;
-  const { user_id } = req;
   try {
     const credential =
-      await CredentialService.findCredentialByUsername(username, user_id);
+      await CredentialService.findCredentialByUsername(username, req.body.jwt.sub);
     if (credential) {
       res.status(200).json(credential);
     } else {
