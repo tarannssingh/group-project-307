@@ -107,6 +107,32 @@ app.post("/credentials", userServicies.authenticateUser, async (req, res) => {
   }
 });
 
+app.put("/credentials", userServicies.authenticateUser, async (req, res) => {
+  const { username, password, website, _id} = req.body;
+  try {
+    //save the credential
+    if (!(await credentials.findOne({_id, user_id: req.body.jwt.sub}))){
+      return res
+        .status(404)
+        .json({
+          error: "Did not find specific record to update"
+        })
+    }
+    if ((await credentials.findOne({_id : {$ne : _id}, username, website, user_id: req.body.jwt.sub}))){
+      return res
+        .status(404)
+        .json({
+          error: "A record already exists with this username for this website. Please update that record instead."
+        })
+    }
+    const credential = await credentials.findOneAndUpdate({_id, user_id: req.body.jwt.sub, website}, {username, password});
+    return res.status(204).json({ message: "Credential updated successfully", id: credential.id });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error updating credential" });
+  }
+});
+
 //DELETE /api/credentials/:id ---deletes a credential by ID
 app.delete("/credentials/:id", userServicies.authenticateUser, async (req, res) => {
   const { id } = req.params;
@@ -128,11 +154,8 @@ app.delete("/credentials/:id", userServicies.authenticateUser, async (req, res) 
 
 // GET /api/credentials ---Retrieve ALL credentials, including passwords
 app.get("/credentials", userServicies.authenticateUser, async (req, res) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]
-  
   try {
-    const credentials = await CredentialService.findAllCredentials(req.user_id);
+    const credentials = await CredentialService.findAllCredentials(req.body.jwt.sub);
     res.status(200).json(credentials);
   } catch (error) {
     res

@@ -31,7 +31,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useState } from "react"
-//import { addAuthHeader, API_PREFIX } from "../../utils"
+import { addAuthHeader, API_PREFIX } from "../../utils"
 import { jwtDecode } from "jwt-decode"
  
 const formSchema = z.object ({
@@ -80,7 +80,7 @@ const Create = () => {
         <>
         <div>
             <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
+            <DialogTrigger asChild classname="createDialog">
                 <Card className="transition-colors duration-300 cursor-pointer">
                     <CardHeader>
                         <CardTitle>Add Credential</CardTitle>
@@ -104,7 +104,7 @@ const Create = () => {
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
-                                <Input placeholder="Website URL (Include https://)" {...field} />
+                                <Input className="website" placeholder="Website URL (Include https://)" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -116,7 +116,7 @@ const Create = () => {
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
-                                <Input placeholder="Credential Username" {...field} />
+                                <Input className="username" placeholder="Credential Username" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -129,7 +129,7 @@ const Create = () => {
                             <FormItem>
                             {/* <FormLabel>Password</FormLabel> */}
                             <FormControl>
-                                <Input placeholder="Credential Password" {...field} />
+                                <Input className="password" placeholder="Credential Password" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>

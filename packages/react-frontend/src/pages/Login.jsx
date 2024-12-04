@@ -49,6 +49,7 @@ function Login(props) {
             id="email"
             value={creds.email}
             onChange={handleChange}
+            className="username"
           />
 
           <label htmlFor="password">Password</label>
@@ -58,6 +59,7 @@ function Login(props) {
             id="password"
             value={creds.password}
             onChange={handleChange}
+            className="password"
           />
 
           <label htmlFor="email">2FA Code</label>
@@ -67,6 +69,7 @@ function Login(props) {
             id="totp"
             value={creds.totp}
             onChange={handleChange}
+            className="2FA"
           />
 
           <input

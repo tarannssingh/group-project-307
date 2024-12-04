@@ -53,7 +53,7 @@ function App() {
           return response.json().then((payload) => {
             setToken(payload.token);
             setMessage(
-              `Signup successful for user: ${creds.email}! Please use this code in your authenticator app to connect your PiggyPass Account: ${payload.totp_secret}`,
+              `Signup successful for user: ${creds.email}! Please use this code in your authenticator app to connect your PiggyPass Account and then proceed to the login page and log in: ${payload.totp_secret}`,
             );
           });
         } else {

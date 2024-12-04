@@ -111,6 +111,10 @@ const authenticateUser = (req, res, next) => {
       process.env.JWT_SIGNING_SECRET,
       (error, decoded) => {
         if (decoded) {
+          if (!req.body) {
+            req.body = {}
+          }
+          req.body.jwt = decoded
           next();
         } else {
           return res.status(401).json({
