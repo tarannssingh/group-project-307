@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
+import { addAuthHeader, API_PREFIX } from "../utils";
 
 export default function Navbar() {
-  const API_PREFIX =  "http://localhost:5478";
   const [searchBy, setSearchBy] = useState("");
-  const[query, setQuery] = useState("");
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if(!query.trim()) {
+    if (!query.trim()) {
       setError("Please enter a search query");
       return;
     }
-    if(!searchBy) {
+    if (!searchBy) {
       setError("Please select a search criteria.");
       return;
     }
-
+  
     try {
       let url = "";
       if (searchBy === "Website") {
@@ -26,12 +26,15 @@ export default function Navbar() {
       } else if (searchBy === "Username") {
         url = `${API_PREFIX}/credentials/username/${query}`;
       }
-
-      const response = await fetch(url);
+  
+      const response = await fetch(url, {
+        headers: addAuthHeader(),
+      });
+  
       if (!response.ok) {
         throw new Error("No credentials found for the given search query.");
       }
-
+  
       const data = await response.json();
       setResults(Array.isArray(data) ? data : [data]); // Handle single or multiple results
     } catch (err) {
@@ -65,14 +68,14 @@ export default function Navbar() {
               </Form.Select>
             </div>
             <input
-              className="form-control me-2 m-0"
+              className="m-0 form-control me-2"
               type="search"
               placeholder="Search"
               aria-label="Search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
-            <button className="btn bg-white" type="submit">
+            <button className="bg-white btn" type="submit">
               Search
             </button>
           </form>

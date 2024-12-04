@@ -110,13 +110,18 @@ const authenticateUser = (req, res, next) => {
       token,
       process.env.JWT_SIGNING_SECRET,
       (error, decoded) => {
-        if (decoded) {
-          next();
-        } else {
-          return res.status(401).json({
-            message: error
-          })
+        if (error) {
+          console.error("JWT verification failed:", error.message);
+          return res.status(401).json(
+            {
+              message: "Invalid or expired token. Please login again."
+            }
+          );
         }
+
+        req.user_id = decoded.user_id;
+        console.log("Authenticated user with ID:", req.user_id);
+        next();
       }
     )
   }
@@ -137,7 +142,7 @@ const login = async (email, password, totp) => {
     throw Error("Invalid TOTP. Please try again.");
   }
   const payload = {
-    sub: user._id,
+    user_id: user._id,
     email: user.email,
   };
   // after validating generate jwt
