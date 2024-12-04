@@ -81,7 +81,7 @@ import { CredContext } from "../../pages/Home"
                         {/* to update */}
                         <Update username={username} website={website} password={password} id={cred_id} update={update} setCredential={setCredential} superOpen={superOpen} setSuperOpen={setSuperOpen}/>
                         {/* to delete */}
-                        <Delete/>
+                        <Delete cred_id={cred_id} update={update} superOpen={superOpen} setSuperOpen={setSuperOpen}/>
                     </div>
                 </div>
                 </DialogDescription>
@@ -207,10 +207,29 @@ import { CredContext } from "../../pages/Home"
 
 
 
-
-  const Delete = () => {
+  const Delete = ({update, cred_id, setSuperOpen}) => {
+    const [open, setOpen] = useState(false)
+    const onDelete = async () => {
+        try {
+            const response = await fetch(`${API_PREFIX}/credentials`, {
+                method: "DELETE",
+                headers: addAuthHeader({"Content-Type": "application/json"}),
+                body: JSON.stringify({_id: cred_id})
+            })
+            if (!response.ok) {
+                const json = await response.json()
+                throw Error(json.error)
+            } else {
+                setOpen(false)
+                setSuperOpen(false)
+                update.setUpdate(!update.update)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        }
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
             <Button className="bg-red-400">Delete</Button>
         </DialogTrigger>
@@ -218,7 +237,7 @@ import { CredContext } from "../../pages/Home"
             <DialogHeader>
                 <DialogTitle>Are you sure sure you want to delete?</DialogTitle>
                 <DialogDescription className="pt-4">
-                    <Button className="bg-yellow-400">Yes</Button>
+                    <Button onClick={onDelete} className="bg-yellow-400">Yes</Button>
                 </DialogDescription>
             </DialogHeader>
         </DialogContent>

@@ -30,9 +30,10 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { addAuthHeader, API_PREFIX } from "../../utils"
 import { jwtDecode } from "jwt-decode"
+import { CredContext } from "../../pages/Home"
  
 const formSchema = z.object ({
     website: z.string().url(),
@@ -44,6 +45,7 @@ const formSchema = z.object ({
 const Create = () => {
     const [message, setMessage] = useState("")
     const [open, setOpen] = useState(false);
+    const update = useContext(CredContext)
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -68,6 +70,7 @@ const Create = () => {
                 throw Error(json.error)
             } else {
                 setOpen(false)
+                update.setUpdate(!update.update)
                 form.reset()
             }
             setMessage("")

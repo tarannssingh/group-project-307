@@ -133,14 +133,12 @@ app.put("/credentials", userServicies.authenticateUser, async (req, res) => {
   }
 });
 
-//DELETE /api/credentials/:id ---deletes a credential by ID
-app.delete("/credentials/:id", userServicies.authenticateUser, async (req, res) => {
-  const { id } = req.params;
-
+//DELETE /api/credentials ---deletes a credential by ID
+app.delete("/credentials", userServicies.authenticateUser, async (req, res) => {
   try {
     // Attempt to delete the credential by ID
-    const deletedCredential = await credentials.findByIdAndDelete(id);
-    if (deletedCredential) {
+    const credential = (await credentials.findOneAndDelete({_id: req.body._id, user_id: req.body.jwt.sub}))
+    if (credential) {
       res.status(200).json({ message: "Credential deleted successfully" });
     } else {
       res.status(404).json({ message: "Credential not found" });
