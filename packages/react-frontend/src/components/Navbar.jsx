@@ -22,7 +22,7 @@ export default function Navbar() {
     try {
       let url = "";
       if (searchBy === "Website") {
-        url = `${API_PREFIX}/credentials/${query}`;
+        url = `${API_PREFIX}/credentials/${encodeURIComponent(query)}`;
       } else if (searchBy === "Username") {
         url = `${API_PREFIX}/credentials/username/${query}`;
       }
