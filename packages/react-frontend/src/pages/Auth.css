@@ -18,6 +18,10 @@
     border-radius: 25px;
   }
 
+  .auth-link {
+    font-weight: bold;
+  }
+
   .auth-button {
     min-width: 100%;
   }

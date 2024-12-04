@@ -33,8 +33,12 @@ function Login(props) {
         navigate("/");
       }
     });
-
+    props.setMessage("");
     setCreds({...creds, password: "", totp: "" }); // Clear form fields
+  }
+
+  function changePage() {
+    props.setMessage("");
   }
 
   return (
@@ -78,9 +82,9 @@ function Login(props) {
             onClick={submitForm}
             className="auth-button"
           />
-          <p>
+          <p className="py-2">
             Do you need a PiggyPass Account?{" "}
-            <Link to="/signup" className="auth-link">
+            <Link to="/signup" className="auth-link" onClick={changePage}>
               Sign Up here!
             </Link>
           </p>

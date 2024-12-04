@@ -57,7 +57,7 @@ import { CredContext } from "../../pages/Home"
         <div>
             <Dialog open={superOpen} onOpenChange={setSuperOpen}>
             <DialogTrigger asChild>
-                <Card className="cursor-pointer transition-colors duration-300">
+                <Card className="transition-colors duration-300 cursor-pointer">
                     <CardHeader>
                         <CardTitle>{credential.website}</CardTitle>
                         <CardDescription className="text-yellow-400 ">{credential.username}</CardDescription>
