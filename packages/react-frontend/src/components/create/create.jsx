@@ -63,7 +63,7 @@ const Create = () => {
             const response = await fetch(`${API_PREFIX}/credentials`, {
                 method: "POST",
                 headers: addAuthHeader({"Content-Type": "application/json"}),
-                body: JSON.stringify({...values, user_id: decoded.sub})
+                body: JSON.stringify({...values, user_id: decoded.user_id})
             })
             const json = await response.json()
             if (!response.ok) {

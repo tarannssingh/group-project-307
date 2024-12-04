@@ -112,21 +112,21 @@ app.put("/credentials", userServicies.authenticateUser, async (req, res) => {
   const { username, password, website, _id} = req.body;
   try {
     //save the credential
-    if (!(await credentials.findOne({_id, user_id: req.body.jwt.sub}))){
+    if (!(await credentials.findOne({_id, user_id: req.body.jwt.user_id}))){
       return res
         .status(404)
         .json({
           error: "Did not find specific record to update"
         })
     }
-    if ((await credentials.findOne({_id : {$ne : _id}, username, website, user_id: req.body.jwt.sub}))){
+    if ((await credentials.findOne({_id : {$ne : _id}, username, website, user_id: req.body.jwt.user_id}))){
       return res
         .status(404)
         .json({
           error: "A record already exists with this username for this website. Please update that record instead."
         })
     }
-    const credential = await credentials.findOneAndUpdate({_id, user_id: req.body.jwt.sub, website}, {username, password: await passwordServices.encrypt(password)});
+    const credential = await credentials.findOneAndUpdate({_id, user_id: req.body.jwt.user_id, website}, {username, password: await passwordServices.encrypt(password)});
     return res.status(204).json({ message: "Credential updated successfully", id: credential.id });
   } catch (error) {
     console.log(error);
@@ -138,7 +138,7 @@ app.put("/credentials", userServicies.authenticateUser, async (req, res) => {
 app.delete("/credentials", userServicies.authenticateUser, async (req, res) => {
   try {
     // Attempt to delete the credential by ID
-    const credential = (await credentials.findOneAndDelete({_id: req.body._id, user_id: req.body.jwt.sub}))
+    const credential = (await credentials.findOneAndDelete({_id: req.body._id, user_id: req.body.jwt.user_id}))
     if (credential) {
       res.status(200).json({ message: "Credential deleted successfully" });
     } else {
@@ -154,7 +154,7 @@ app.delete("/credentials", userServicies.authenticateUser, async (req, res) => {
 // GET /api/credentials ---Retrieve ALL credentials, including passwords
 app.get("/credentials", userServicies.authenticateUser, async (req, res) => {
   try {
-    let credentials = await CredentialService.findAllCredentials(req.body.jwt.sub);
+    let credentials = await CredentialService.findAllCredentials(req.body.jwt.user_id);
     credentials = await Promise.all (credentials.map(async (c) => {c.password = await passwordServices.decrypt(c.password); return c }))
     res.status(200).json(credentials);
   } catch (error) {
@@ -168,7 +168,7 @@ app.get("/credentials", userServicies.authenticateUser, async (req, res) => {
 app.get("/credentials/:website", userServicies.authenticateUser, async (req, res) => {
   const website = decodeURIComponent(req.params.website);
   try {
-    const credential = await CredentialService.findCredentialByWebsite(website, req.body.jwt.sub);
+    const credential = await CredentialService.findCredentialByWebsite(website, req.body.jwt.user_id);
     if (credential) {
       res.status(200).json(credential);
     } else {
@@ -189,7 +189,7 @@ app.get("/credentials/username/:username", userServicies.authenticateUser, async
   const { username } = req.params;
   try {
     const credential =
-      await CredentialService.findCredentialByUsername(username, req.body.jwt.sub);
+      await CredentialService.findCredentialByUsername(username, req.body.jwt.user_id);
     if (credential) {
       res.status(200).json(credential);
     } else {

@@ -10,10 +10,10 @@ export default function Navbar() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!query.trim()) {
-      setError("Please enter a search query");
-      return;
-    }
+    // if (!query.trim()) {
+    //   setError("Please enter a search query");
+    //   return;
+    // }
     if (!searchBy) {
       setError("Please select a search criteria.");
       return;
