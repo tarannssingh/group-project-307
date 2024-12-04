@@ -166,7 +166,7 @@ app.get("/credentials", userServicies.authenticateUser, async (req, res) => {
 
 // GET /api/credentials/:website-- retrive credential based on website searched
 app.get("/credentials/:website", userServicies.authenticateUser, async (req, res) => {
-  const website = decodeURIComponent(req.params.website);
+  const website = decodeURIComponent(req.params.website);  
   try {
     const credential = await CredentialService.findCredentialByWebsite(website, req.body.jwt.user_id);
     if (credential) {

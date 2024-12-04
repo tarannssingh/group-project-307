@@ -17,6 +17,8 @@ export default function Navbar() {
     if (!searchBy) {
       setError("Please select a search criteria.");
       return;
+    } else {
+      setError("")
     }
   
     try {
@@ -24,7 +26,7 @@ export default function Navbar() {
       if (searchBy === "Website") {
         url = `${API_PREFIX}/credentials/${encodeURIComponent(query)}`;
       } else if (searchBy === "Username") {
-        url = `${API_PREFIX}/credentials/username/${query}`;
+        url = `${API_PREFIX}/credentials/username/${query.trim()}`;
       }
   
       const response = await fetch(url, {

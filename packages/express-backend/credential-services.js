@@ -16,7 +16,12 @@ async function findCredentialByWebsite(website, user_id) {
 // Function to find credentials by username
 async function findCredentialByUsername(username, user_id) {
   try {
-    const credential = await credentials.findOne({ user_id, username });
+    let credential
+    if (username) {
+      credential = await credentials.find({ user_id, username });
+    } else {
+      credential = await credentials.find({ user_id });
+    }
     return credential;
   } catch (error) {
     throw new Error(`Error finding credential by username: ${error.message}`);
