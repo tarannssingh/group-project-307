@@ -128,9 +128,7 @@ export default function Navbar() {
           />
         </button>
         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" style={{ marginLeft: "-100px" }}>
-          <button className="dropdown-item" type="button" onClick={() => handleShowModal('Option1')}>
-            Profile
-          </button>
+      
           <button className="dropdown-item" type="button" onClick={() => handleShowModal('Option2')}>
             Log Out
           </button>
@@ -141,7 +139,7 @@ export default function Navbar() {
       </div>
 
       {/* Render the corresponding modal */}
-      {showModal === 'Option1' && <Option1 show={true} onClose={handleCloseModal} />}
+      
       {showModal === 'Option2' && <Option2 show={true} onClose={handleCloseModal} />}
       {showModal === 'Option3' && <Option3 show={true} onClose={handleCloseModal} />}
     

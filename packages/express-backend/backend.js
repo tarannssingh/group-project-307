@@ -8,6 +8,7 @@ import credentials from "./credential.js";
 import CredentialService from "./credential-services.js";
 import User from "./user.js";
 import passwordServices from "./password-services.js";
+import countCredentials from "./credential-services.js";
 
 dotenv.config();
 
@@ -208,14 +209,15 @@ app.get("/credentials/username/:q", userServicies.authenticateUser, async (req, 
   }
 });
 
-app.get("/credentials/count", async (req, res) => {
-  try {
-    const totalCredentials = await CredentialService.countCredentials();
-    res.status(200).json({ total: totalCredentials });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+
+// app.get('/credentials/count', async (req, res) => {
+//   try {
+//     const totalCredentials = await countCredentials();
+//     res.status(200).json({ total: totalCredentials });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
 // Produces a random valid password
 app.get("/randPass", async (req, res) => {

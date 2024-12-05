@@ -52,10 +52,21 @@ function findCredentialById(id) {
   return Credential.findById(id);
 }
 
+// function countCredentials() {
+//   try {
+//     const totalCredentials =  credentials.countDocuments();
+//     return totalCredentials;
+//   } catch (error) {
+//     throw new Error(`Error counting credentials: ${error.message}`);
+//   }
+// }
+
+
 export default {
   findAllCredentials,
   findCredentialById,
   findCredentialByWebsite,
   findCredentialByUsername,
+  // countCredentials
   // findCredentialByUsernameAndWebsite,
 };
