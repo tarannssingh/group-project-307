@@ -23,9 +23,9 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-import keyIcon from "../../assets/key.png"
-import subIcon from "../../assets/sub.png"
-import eyeIcon from "../../assets/eye.png"
+import keyIcon from "../../../public/key.png"
+import subIcon from "../../../public/sub.png"
+import eyeIcon from "../../../public/eye.png"
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

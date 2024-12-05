@@ -13,9 +13,10 @@ import {
 } from "@/components/ui/card";
 
 
-import keyIcon from "../../assets/key.png"
-import subIcon from "../../assets/sub.png"
-import eyeIcon from "../../assets/eye.png"
+import keyIcon from "../../../public/key.png"
+import subIcon from "../../../public/sub.png"
+import eyeIcon from "../../../public/eye.png"
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
