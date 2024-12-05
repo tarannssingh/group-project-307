@@ -5,6 +5,76 @@ import Modal from 'react-bootstrap/Modal';
 // import Login from "./pages/Login";
 import { useNavigate } from "react-router-dom";
 
+
+
+
+// export function Option1() {
+//     const API_PREFIX =  "http://localhost:5478";
+//     const [show, setShow] = useState(false);
+//     const [credentialCount, setCredentialCount] = useState(null);
+//     const [error, setError] = useState("");
+  
+//     const handleClose = () => setShow(false);
+  
+//     useEffect(() => {
+//       setShow(true); // Open the modal when the component mounts
+  
+//       async function fetchCredentialCount() {
+//         try {
+//           const response = await fetch(`${API_PREFIX}/credentials/count`, {
+//             method: "GET",
+//             headers: {
+//               "Content-Type": "application/json",
+//             },
+//           });
+  
+//           if (response.ok) {
+//             const data = await response.json();
+//             setCredentialCount(data.total); // Set the credential count
+//           } else {
+//             const errorData = await response.json();
+//             setError(`Error: ${errorData.error}`);
+//           }
+//         } catch (err) {
+//           setError(`Error: ${err.message}`);
+//         }
+//       }
+  
+//       fetchCredentialCount(); // Fetch the credential count
+//     }, []);
+  
+//     return (
+//       <Modal
+//         show={show}
+//         onHide={handleClose}
+//         backdrop="static"
+//         keyboard={false}
+//       >
+//         <Modal.Header closeButton>
+//           <Modal.Title>Profile Details</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>
+//           {error ? (
+//             <p className="text-danger">{error}</p>
+//           ) : (
+//             <>
+//               <p>
+//                 Credential Count:{" "}
+//                 {credentialCount !== null ? credentialCount : "Loading..."}
+//               </p>
+//             </>
+//           )}
+//         </Modal.Body>
+//         <Modal.Footer>
+//           <Button variant="secondary" onClick={handleClose}>
+//             Close
+//           </Button>
+//         </Modal.Footer>
+//       </Modal>
+//     );
+//   }
+  
+
 export function Option1() {
     const [show, setShow] = useState(false);
   
@@ -52,6 +122,7 @@ export function Option1() {
     const handleLogout = async () => {
       try {
         //need to clear user data
+        sessionStorage.setItem('token',"INVALID_TOKEN")
         navigate("/login");
       } catch (error) {
         console.error("Logout failed", error);
@@ -96,10 +167,13 @@ export function Option1() {
   
     const handleDelete = async () => {
       try {
-        //need to clear user data
+        
+        //need to delete user data
+        sessionStorage.setItem('token',"INVALID_TOKEN")
+        //need to delete user
         navigate("/signup");
       } catch (error) {
-        console.error("Logout failed", error);
+        console.error("Delete account failed", error);
       }
     };
     return (
@@ -113,7 +187,8 @@ export function Option1() {
           <Modal.Title>Log Account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        Are you sure you want to delete your account? This action cannot be reversed and you will loose all your credentials.
+        Are you sure you want to delete your account? 
+        This action cannot be reversed and you will loose all your credentials.
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
