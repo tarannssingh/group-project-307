@@ -15,6 +15,8 @@ import {
     CardTitle,
   } from "@/components/ui/card"
 
+import { passwordGenCheck } from "../../../../express-backend/password-services";
+import keyIcon from "../../assets/key.png"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -131,6 +133,15 @@ const Create = () => {
                             <FormControl>
                                 <Input placeholder="Credential Password" {...field} />
                             </FormControl>
+                            <img
+                                src={keyIcon}
+                                alt="Generate Password"
+                                className="cursor-pointer w-8 h-8"
+                                onClick={() =>
+                                    form.setValue("password", passwordGenCheck())
+                                }
+                                title="Generate Password"
+                            />
                             <FormMessage />
                             </FormItem>
                         )}
