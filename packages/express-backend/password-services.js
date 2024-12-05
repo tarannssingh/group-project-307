@@ -102,10 +102,14 @@ const substituteWord = (word) => {
     .toLowerCase()
     .split("")
     .forEach((letter) => {
-      const subs = substitutionTable[letter];
-      stronger += subs[Math.floor(Math.random() * subs.length)];
+      if (substitutionTable[letter]) {
+        const subs = substitutionTable[letter];
+        stronger += subs[Math.floor(Math.random() * subs.length)];
+      } else {
+        stronger += letter
+      }
     });
-  console.log(stronger);
+  return stronger 
 };
 
 // (() => {
