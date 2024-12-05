@@ -12,7 +12,6 @@ const accessValidators = [
   body("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long")
-    // .matches(/^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z])$/)
     .isStrongPassword({
       minLength: 8,
       minLowercase: 3,
@@ -39,7 +38,6 @@ const loginValidators = [
   body("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long")
-    // .matches(/^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z])$/)
     .isStrongPassword({
       minLength: 8,
       minLowercase: 3,
@@ -99,34 +97,30 @@ const validateTotp = (secret, token) => {
 
 const authenticateUser = (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
     return res.status(401).json({
-      message: "Failed to authenticate user. Please login or signup."
-    })
+      message: "Failed to authenticate user. Please login or signup.",
+    });
   } else {
-    jwt.verify(
-      token,
-      process.env.JWT_SIGNING_SECRET,
-      (error, decoded) => {
-        if (decoded) {
-          if (!req.body) {
-            req.body = {}
-          }
-          req.body.jwt = decoded
-          console.log(req.body);
-          
-          next();
-        } else {
-          return res.status(401).json({
-            message: "Invalid or expired token. Please login again."
-          })
+    jwt.verify(token, process.env.JWT_SIGNING_SECRET, (error, decoded) => {
+      if (decoded) {
+        if (!req.body) {
+          req.body = {};
         }
+        req.body.jwt = decoded;
+        console.log(req.body);
+
+        next();
+      } else {
+        return res.status(401).json({
+          message: "Invalid or expired token. Please login again.",
+        });
       }
-    )
+    });
   }
-}
+};
 
 const login = async (email, password, totp) => {
   // validate user
@@ -148,9 +142,13 @@ const login = async (email, password, totp) => {
   };
   // after validating generate jwt
   return jwt.sign(payload, process.env.JWT_SIGNING_SECRET, { expiresIn: "1h" }); // Store in local storage in browser
-  // jwt.sign({user._id })
 };
 
-export default { accessValidators, loginValidators, signup, login, authenticateUser};
+export default {
+  accessValidators,
+  loginValidators,
+  signup,
+  login,
+  authenticateUser,
+};
 
-// KBFEG3RON42FOTLLINYW22LUHFWES4ZY

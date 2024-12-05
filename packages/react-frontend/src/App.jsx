@@ -5,10 +5,7 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import { API_PREFIX } from "./utils";
 
-
-
 function App() {
-  // process.env.API_PREFIX ||  
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
   const [message, setMessage] = useState("");
@@ -16,17 +13,17 @@ function App() {
   async function loginUser(creds) {
     setMessage("");
     const response = await fetch(`${API_PREFIX}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(creds)
-      })
-    const json = await response.json()
-    if (response.status == 200 ) {
-      console.log(json)
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(creds),
+    });
+    const json = await response.json();
+    if (response.status == 200) {
+      console.log(json);
       setToken(json.message);
-      sessionStorage.setItem('token', json.message)
+      sessionStorage.setItem("token", json.message);
       return true;
     } else {
       setMessage(`Login Error: ${json.error}`);
@@ -80,12 +77,22 @@ function App() {
           <Route
             path="/login"
             element={
-              <Login handleSubmit={loginUser} message={message} setMessage={setMessage} />
+              <Login
+                handleSubmit={loginUser}
+                message={message}
+                setMessage={setMessage}
+              />
             }
           />
           <Route
             path="/signup"
-            element={<SignUp handleSubmit={signupUser} message={message} setMessage={setMessage}/>}
+            element={
+              <SignUp
+                handleSubmit={signupUser}
+                message={message}
+                setMessage={setMessage}
+              />
+            }
           />
         </Routes>
       </BrowserRouter>
@@ -95,5 +102,3 @@ function App() {
 }
 
 export default App;
-
-
