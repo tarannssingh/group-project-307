@@ -47,12 +47,14 @@ function Home() {
       <CredContext.Provider value={{update, setUpdate}}>
         <Navbar />
         {/* here is where we create the dashboard */}
-        <Create/>
-        {logins && logins.length > 0 ? logins.map((login) => {
-          return <Credential key={login._id} cred_id={login._id} username={login.username} website={login.website}  password={login.password}/>
-        }) : (
-          <p>No credentials available</p>
-        )}
+        <div className="p-4 d-flex flex-column justify-content-around ">
+          <Create/>
+          {logins && logins.length > 0 ? logins.map((login) => {
+            return <Credential key={login._id} cred_id={login._id} username={login.username} website={login.website}  password={login.password}/>
+          }) : (
+            <p>No credentials available</p>
+          )}
+        </div>
       </CredContext.Provider>
     </LoginContext.Provider>
   );
