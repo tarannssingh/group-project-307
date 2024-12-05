@@ -81,6 +81,7 @@ app.get("/users", async (req, res) => {
   }
 });
 
+
 //CREDENTIAL ENDPOINTS
 
 //POST /api/credential endpoint -- accept username, website and password
