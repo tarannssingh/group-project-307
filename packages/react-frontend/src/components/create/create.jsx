@@ -160,7 +160,7 @@ const Create = () => {
                                 <img
                                     src={subIcon}
                                     alt="Substitute Password"
-                                    className="w-8 h-8 p-1 m-2 cursor-pointer"
+                                    className="w-8 h-8 p-1 m-1 cursor-pointer"
                                     onClick={async () => {
                                         try {
                                             const response = await fetch(`${API_PREFIX}/subPass`, {
