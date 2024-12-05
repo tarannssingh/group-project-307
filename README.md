@@ -9,6 +9,23 @@ Using Bootstrap we created dialog popups allowing for components to accept and d
 # User Stories
 [https://docs.google.com/document/d/1mTgCzb-miKglkNFTxlXBUtG3lIcP98tZp6LwHdCo6i4/edit?tab=t.0](https://docs.google.com/document/d/1mTgCzb-miKglkNFTxlXBUtG3lIcP98tZp6LwHdCo6i4/edit?tab=t.0)
 
+# UI Prototype and Storyboard
+[https://www.figma.com/design/RbxqUP7Gn4Vnx9Q0g6gk2J/307-Group-Project] (https://www.figma.com/design/RbxqUP7Gn4Vnx9Q0g6gk2J/307-Group-Project)
+
+
+# Class Diagram
+[https://lucid.app/lucidchart/1acae02d-cca6-47bd-9e2d-017c5db94af7/edit?viewport_loc=-1625%2C-489%2C2290%2C1248%2C0_0&invitationId=inv_9c4f42e2-2e43-4502-aae8-11e38d57f2da](https://lucid.app/lucidchart/1acae02d-cca6-47bd-9e2d-017c5db94af7/edit?viewport_loc=-1625%2C-489%2C2290%2C1248%2C0_0&invitationId=inv_9c4f42e2-2e43-4502-aae8-11e38d57f2da)
+(You will have to login to lucid.app to see our class diagram)
+
+# Final Presentation
+[https://docs.google.com/presentation/d/1BHITpHPAKnQ0XUZIlyZafL2kal9cnHxQ1WGuUK5OQSk/edit#slide=id.g31c5eb6deea_3_0](https://docs.google.com/presentation/d/1BHITpHPAKnQ0XUZIlyZafL2kal9cnHxQ1WGuUK5OQSk/edit#slide=id.g31c5eb6deea_3_0)
+
+# Github Issues and Sprint Boards
+[https://github.com/users/tarannssingh/projects/1/views/1?filterQuery=](https://github.com/users/tarannssingh/projects/1/views/1?filterQuery=)
+
+
+# Documentation
+
 # Contributing
 We are following [Airbnb Eslint Config](https://www.npmjs.com/package/eslint-config-airbnb)
 <br />
@@ -26,3 +43,6 @@ We are using [Prettier](https://prettier.io/)
 
 # Diagrams
 [Check out our Class Diagram](docs/diagram.md)
+
+# Testing
+We are using Cypress E2E testing. 
