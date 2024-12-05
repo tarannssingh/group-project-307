@@ -239,12 +239,6 @@ app.post("/subPass", (req, res) => {
   res.json({ password });
 })
 
-// app.get("/subPass", async(req, res) => {
-//   try {
-//     const substitute = await 
-//   }
-// })
-
 //for sprint 3
 //PUT /api/credentials/:id ---allows updating username, website and password
 //app.put('/api/credentials/:id')
