@@ -52,6 +52,7 @@ export function Option1() {
     const handleLogout = async () => {
       try {
         //need to clear user data
+        sessionStorage.setItem('token',"INVALID_TOKEN")
         navigate("/login");
       } catch (error) {
         console.error("Logout failed", error);
@@ -96,10 +97,13 @@ export function Option1() {
   
     const handleDelete = async () => {
       try {
-        //need to clear user data
+        
+        //need to delete user data
+        sessionStorage.setItem('token',"INVALID_TOKEN")
+        //need to delete user
         navigate("/signup");
       } catch (error) {
-        console.error("Logout failed", error);
+        console.error("Delete account failed", error);
       }
     };
     return (
@@ -113,7 +117,8 @@ export function Option1() {
           <Modal.Title>Log Account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        Are you sure you want to delete your account? This action cannot be reversed and you will loose all your credentials.
+        Are you sure you want to delete your account? 
+        This action cannot be reversed and you will loose all your credentials.
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>

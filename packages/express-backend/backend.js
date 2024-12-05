@@ -210,7 +210,7 @@ app.get("/credentials/username/:q", userServicies.authenticateUser, async (req, 
 
 app.get('/credentials/count', async (req, res) => {
   try {
-    const totalCredentials = await countCredentials();
+    const totalCredentials = await CredentialService.countCredentials();
     res.status(200).json({ total: totalCredentials });
   } catch (error) {
     res.status(500).json({ error: error.message });
