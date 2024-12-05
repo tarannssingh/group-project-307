@@ -84,7 +84,7 @@ const Create = () => {
         <div>
             <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild classname="createDialog">
-                <Card className="transition-colors duration-300 cursor-pointer">
+                <Card className="transition-colors duration-300 cursor-pointer" style={{ backgroundColor: "#FFC1A1" }}>
                     <CardHeader>
                         <CardTitle>Add Credential</CardTitle>
                     </CardHeader>

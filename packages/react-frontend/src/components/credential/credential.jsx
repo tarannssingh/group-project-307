@@ -32,12 +32,12 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useState, useEffect, useContext } from "react"
 import { addAuthHeader, API_PREFIX } from "../../utils"
-import { jwtDecode } from "jwt-decode"
 import { CredContext } from "../../pages/Home"
 
   const Credential = ({username, website, password, cred_id}) => {
-    const update = useContext(CredContext)
-    const [superOpen, setSuperOpen] = useState(false)
+    const update = useContext(CredContext);
+    const [superOpen, setSuperOpen] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [credential, setCredential] = useState({
         "username": "",
         "website": "",
@@ -52,6 +52,9 @@ import { CredContext } from "../../pages/Home"
         setCredential(json)
     }, [username, website, password])
     
+    const togglePassword = () => {
+        setShowPassword(!showPassword);
+    }
     return (
         <>
         <div>
@@ -74,14 +77,17 @@ import { CredContext } from "../../pages/Home"
                         {" " + credential.username}
                     </h1>
                     <h1>
-                        Password: 
-                        {" " + credential.password}
+                        Password: {" "}
+                        {showPassword ? credential.password: "*****"}
                     </h1>
-                    <div className="flex justify-center mt-4 space-x-4">
+                    <div className="flex justify-center mt-4 space-x-4 align-items-center">
                         {/* to update */}
-                        <Update username={username} website={website} password={password} id={cred_id} update={update} setCredential={setCredential} superOpen={superOpen} setSuperOpen={setSuperOpen}/>
+                        <Update className="bg-green-500" username={username} website={website} password={password} id={cred_id} update={update} setCredential={setCredential} superOpen={superOpen} setSuperOpen={setSuperOpen}/>
                         {/* to delete */}
                         <Delete cred_id={cred_id} update={update} superOpen={superOpen} setSuperOpen={setSuperOpen}/>
+                        <Button onClick={togglePassword} className="bg-gray-500 ">
+                            {showPassword ? "Hide Password" : "Show Password"}
+                        </Button>
                     </div>
                 </div>
                 </DialogDescription>
