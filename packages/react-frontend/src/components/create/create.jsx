@@ -15,6 +15,8 @@ import {
     CardTitle,
   } from "@/components/ui/card"
 
+
+import keyIcon from "../../assets/key.png"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -134,15 +136,35 @@ const Create = () => {
                             <FormControl>
                                 <Input className="password" placeholder="Credential Password" {...field} />
                             </FormControl>
+                            <img
+                                src={keyIcon}
+                                alt="Generate Password"
+                                className="cursor-pointer w-8 h-8"
+                                onClick={async () => {
+                                    try {
+                                        const response = await fetch(`${API_PREFIX}/randPass`, {
+                                            method: "GET",
+                                        });
+                                        if (!response.ok) {
+                                            throw new Error("Failed to fetch password");
+                                        }
+                                        const data = await response.json();
+                                        form.setValue("password", data);
+                                    } catch (error) {
+                                        console.error("Error generating password:", error.message);
+                                    }
+                                  }}
+                                title="Generate Password"
+                            />
                             <FormMessage />
                             </FormItem>
                         )}
                         />
                         <Button type="submit" className="bg-red-600">Submit</Button>
                     </form>
-                    <p className="pt-4">
-                        {message}
-                    </p>
+                    <div className="pt-4">
+                        <p>{message}</p>
+                    </div>
                     </Form>
                 </div>
                 </DialogDescription>
