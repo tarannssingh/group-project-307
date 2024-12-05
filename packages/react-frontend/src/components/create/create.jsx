@@ -1,19 +1,16 @@
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from "@/components/ui/dialog"
-  import {
-    Card,
-    // CardContent,
-    // CardDescription,
-    // CardFooter,
-    CardHeader,
-    CardTitle,
-  } from "@/components/ui/card"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 
 import keyIcon from "../../assets/key.png"
@@ -23,105 +20,110 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-//   FormDescription,
   FormField,
   FormItem,
-//   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { useContext, useState } from "react"
-import { addAuthHeader, API_PREFIX } from "../../utils"
-import { jwtDecode } from "jwt-decode"
-import { CredContext } from "../../pages/Home"
- 
-const formSchema = z.object ({
-    website: z.string().url(),
-    username: z.string().min(2).max(50),
-    password: z.string().min(1).max(100),
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useContext, useState } from "react";
+import { addAuthHeader, API_PREFIX } from "../../utils";
+import { jwtDecode } from "jwt-decode";
+import { CredContext } from "../../pages/Home";
 
-})
+const formSchema = z.object({
+  website: z.string().url(),
+  username: z.string().min(2).max(50),
+  password: z.string().min(1).max(100),
+});
 
 const Create = () => {
-    const [message, setMessage] = useState("")
-    const [open, setOpen] = useState(false);
-    const update = useContext(CredContext)
+  const [message, setMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const update = useContext(CredContext);
 
-    const form = useForm({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            website: "",
-            username: "",
-            password: ""
-        }
-      })
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      website: "",
+      username: "",
+      password: "",
+    },
+  });
 
-    const handleSubmit = async (values) => {
-        try {
-            const token = sessionStorage.getItem("token")
-            const decoded = jwtDecode(token)
-            const response = await fetch(`${API_PREFIX}/credentials`, {
-                method: "POST",
-                headers: addAuthHeader({"Content-Type": "application/json"}),
-                body: JSON.stringify({...values, user_id: decoded.user_id})
-            })
-            const json = await response.json()
-            if (!response.ok) {
-                throw Error(json.error)
-            } else {
-                setOpen(false)
-                update.setUpdate(!update.update)
-                form.reset()
-            }
-            setMessage("")
-        } catch (error) {
-            setMessage(error.message)
-        }
+  const handleSubmit = async (values) => {
+    try {
+      const token = sessionStorage.getItem("token");
+      const decoded = jwtDecode(token);
+      const response = await fetch(`${API_PREFIX}/credentials`, {
+        method: "POST",
+        headers: addAuthHeader({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ ...values, user_id: decoded.user_id }),
+      });
+      const json = await response.json();
+      if (!response.ok) {
+        throw Error(json.error);
+      } else {
+        setOpen(false);
+        update.setUpdate(!update.update);
+        form.reset();
+      }
+      setMessage("");
+    } catch (error) {
+      setMessage(error.message);
     }
+  };
 
-    return (
-        <>
-        <div>
-            <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild className="createDialog">
-                <Card className="transition-colors duration-300 cursor-pointer" style={{ backgroundColor: "#FFC1A1" }}>
-                    <CardHeader>
-                        <CardTitle>Add Credential</CardTitle>
-                    </CardHeader>
-                </Card>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                <DialogTitle>
-                    <h1 className="m-2 mb-4">
-                        Add Credential
-                    </h1>
-                </DialogTitle>
-                <DialogDescription>
+  return (
+    <>
+      <div>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild className="createDialog">
+            <Card
+              className="transition-colors duration-300 cursor-pointer"
+              style={{ backgroundColor: "#FFC1A1" }}
+            >
+              <CardHeader>
+                <CardTitle>Add Credential</CardTitle>
+              </CardHeader>
+            </Card>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                <h1 className="m-2 mb-4">Add Credential</h1>
+              </DialogTitle>
+              <DialogDescription>
                 <div>
-                    <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
-                        <FormField
+                  <Form {...form}>
+                    <form
+                      onSubmit={form.handleSubmit(handleSubmit)}
+                      className="space-y-8"
+                    >
+                      <FormField
                         control={form.control}
                         name="website"
                         render={({ field }) => (
-                            <FormItem>
+                          <FormItem>
                             <FormControl>
-                                <Input className="website" placeholder="Website URL (Include https://www. or Copy Paste URL)" {...field} />
+                              <Input
+                                className="website"
+                                placeholder="Website URL (Include https://www. or Copy Paste URL)"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
-                            </FormItem>
+                          </FormItem>
                         )}
-                        />
-                        <FormField
+                      />
+                      <FormField
                         control={form.control}
                         name="username"
                         render={({ field }) => (
-                            <FormItem>
+                          <FormItem>
                             <FormControl>
                                 <Input 
                                 className="username" 
@@ -130,10 +132,10 @@ const Create = () => {
                                 />
                             </FormControl>
                             <FormMessage />
-                            </FormItem>
+                          </FormItem>
                         )}
-                        />
-                        <FormField
+                      />
+                      <FormField
                         control={form.control}
                         name="password"
                         render={({ field }) => {
@@ -207,25 +209,17 @@ const Create = () => {
                         <Button type="submit" className="bg-red-600">Submit</Button>
                     </form>
                     <div className="pt-4">
-                        <p>{message}</p>
+                      <p>{message}</p>
                     </div>
-                    </Form>
+                  </Form>
                 </div>
-                </DialogDescription>
-                </DialogHeader>
-            </DialogContent>
-            </Dialog>
-        </div>
-        </>
-    )
-}
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </>
+  );
+};
 
-export default Create
-
-
-
-// {/* Render One Error at the Bottom */}
-// {form.formState.errors && (
-//     <p className="mt-4 text-sm text-red-500">
-//       {Object.values(form.formState.errors)[0]?.message}
-//     </p>
+export default Create;

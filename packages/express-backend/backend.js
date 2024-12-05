@@ -8,6 +8,7 @@ import credentials from "./credential.js";
 import CredentialService from "./credential-services.js";
 import User from "./user.js";
 import passwordServices from "./password-services.js";
+import countCredentials from "./credential-services.js";
 
 dotenv.config();
 
@@ -82,25 +83,28 @@ app.get("/users", async (req, res) => {
   }
 });
 
-
 //CREDENTIAL ENDPOINTS
 
 //POST /api/credential endpoint -- accept username, website and password
 app.post("/credentials", userServicies.authenticateUser, async (req, res) => {
-  const { username, password, website} = req.body;
-  const user_id = req.body.jwt.sub
-    
+  const { username, password, website } = req.body;
+  const user_id = req.body.jwt.sub;
+
   try {
     //save the credential
-    if ((await credentials.findOne({ website, username, user_id }))){
-      return res
-        .status(409)
-        .json({
-          error: "Username and Website combination already exist. Update instead."
-        })
+    if (await credentials.findOne({ website, username, user_id })) {
+      return res.status(409).json({
+        error:
+          "Username and Website combination already exist. Update instead.",
+      });
     }
 
-    const credential = new credentials({ username, website, password: await passwordServices.encrypt(password), user_id});
+    const credential = new credentials({
+      username,
+      website,
+      password: await passwordServices.encrypt(password),
+      user_id,
+    });
     await credential.save();
     res
       .status(201)
@@ -112,25 +116,34 @@ app.post("/credentials", userServicies.authenticateUser, async (req, res) => {
 });
 
 app.put("/credentials", userServicies.authenticateUser, async (req, res) => {
-  const { username, password, website, _id} = req.body;
+  const { username, password, website, _id } = req.body;
   try {
     //save the credential
-    if (!(await credentials.findOne({_id, user_id: req.body.jwt.sub}))){
-      return res
-        .status(404)
-        .json({
-          error: "Did not find specific record to update"
-        })
+    if (!(await credentials.findOne({ _id, user_id: req.body.jwt.sub }))) {
+      return res.status(404).json({
+        error: "Did not find specific record to update",
+      });
     }
-    if ((await credentials.findOne({_id : {$ne : _id}, username, website, user_id: req.body.jwt.sub}))){
-      return res
-        .status(404)
-        .json({
-          error: "A record already exists with this username for this website. Please update that record instead."
-        })
+    if (
+      await credentials.findOne({
+        _id: { $ne: _id },
+        username,
+        website,
+        user_id: req.body.jwt.sub,
+      })
+    ) {
+      return res.status(404).json({
+        error:
+          "A record already exists with this username for this website. Please update that record instead.",
+      });
     }
-    const credential = await credentials.findOneAndUpdate({_id, user_id: req.body.jwt.sub, website}, {username, password: await passwordServices.encrypt(password)});
-    return res.status(204).json({ message: "Credential updated successfully", id: credential.id });
+    const credential = await credentials.findOneAndUpdate(
+      { _id, user_id: req.body.jwt.sub, website },
+      { username, password: await passwordServices.encrypt(password) },
+    );
+    return res
+      .status(204)
+      .json({ message: "Credential updated successfully", id: credential.id });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error updating credential" });
@@ -141,7 +154,10 @@ app.put("/credentials", userServicies.authenticateUser, async (req, res) => {
 app.delete("/credentials", userServicies.authenticateUser, async (req, res) => {
   try {
     // Attempt to delete the credential by ID
-    const credential = (await credentials.findOneAndDelete({_id: req.body._id, user_id: req.body.jwt.sub}))
+    const credential = await credentials.findOneAndDelete({
+      _id: req.body._id,
+      user_id: req.body.jwt.sub,
+    });
     if (credential) {
       res.status(200).json({ message: "Credential deleted successfully" });
     } else {
@@ -157,8 +173,15 @@ app.delete("/credentials", userServicies.authenticateUser, async (req, res) => {
 // GET /api/credentials ---Retrieve ALL credentials, including passwords
 app.get("/credentials", userServicies.authenticateUser, async (req, res) => {
   try {
-    let credentials = await CredentialService.findAllCredentials(req.body.jwt.sub);
-    credentials = await Promise.all (credentials.map(async (c) => {c.password = await passwordServices.decrypt(c.password); return c }))
+    let credentials = await CredentialService.findAllCredentials(
+      req.body.jwt.sub,
+    );
+    credentials = await Promise.all(
+      credentials.map(async (c) => {
+        c.password = await passwordServices.decrypt(c.password);
+        return c;
+      }),
+    );
     res.status(200).json(credentials);
   } catch (error) {
     res
@@ -168,54 +191,58 @@ app.get("/credentials", userServicies.authenticateUser, async (req, res) => {
 });
 
 // GET /api/credentials/website/:q-- retrive credential based on website searched
-app.get("/credentials/website/:q", userServicies.authenticateUser, async (req, res) => {
-  const query = decodeURIComponent(req.params.q);  
-  try {
-    const credential = await CredentialService.findCredentialByWebsite(query, req.body.jwt.sub);
-    if (credential) {
-      return res.status(200).json(credential);
-    } else {
-      return res
-        .status(404)
-        .json({ message: "Credential not found for this website" });
+app.get(
+  "/credentials/website/:q",
+  userServicies.authenticateUser,
+  async (req, res) => {
+    const query = decodeURIComponent(req.params.q);
+    try {
+      const credential = await CredentialService.findCredentialByWebsite(
+        query,
+        req.body.jwt.sub,
+      );
+      if (credential) {
+        return res.status(200).json(credential);
+      } else {
+        return res
+          .status(404)
+          .json({ message: "Credential not found for this website" });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Error retrieving credential(s)",
+        error: error.message,
+      });
     }
-  } catch (error) {
-    res.status(500).json({
-      message: "Error retrieving credential(s)",
-      error: error.message,
-    });
-  }
-});
+  },
+);
 
 // GET /api/credentials/username/:q-- retrive credential based on website searched
-app.get("/credentials/username/:q", userServicies.authenticateUser, async (req, res) => {
-  const query = decodeURIComponent(req.params.q);  
-  try {
-    const credential =
-    await CredentialService.findCredentialByUsername(query, req.body.jwt.sub);
-    if (credential) {
-      return res.status(200).json(credential);
-    } else {
-      return res
-        .status(404)
-        .json({ message: "Credential not found for this website" });
+app.get(
+  "/credentials/username/:q",
+  userServicies.authenticateUser,
+  async (req, res) => {
+    const query = decodeURIComponent(req.params.q);
+    try {
+      const credential = await CredentialService.findCredentialByUsername(
+        query,
+        req.body.jwt.sub,
+      );
+      if (credential) {
+        return res.status(200).json(credential);
+      } else {
+        return res
+          .status(404)
+          .json({ message: "Credential not found for this website" });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Error retrieving credential(s)",
+        error: error.message,
+      });
     }
-  } catch (error) {
-    res.status(500).json({
-      message: "Error retrieving credential(s)",
-      error: error.message,
-    });
-  }
-});
-
-app.get("/credentials/count", async (req, res) => {
-  try {
-    const totalCredentials = await countCredentials();
-    res.status(200).json({ total: totalCredentials });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+  },
+);
 
 // Produces a random valid password
 app.get("/randPass", async (req, res) => {
@@ -232,18 +259,13 @@ app.get("/randPass", async (req, res) => {
 // Substitutes characters in an input to turn into a password
 app.post("/subPass", (req, res) => {
   const { input } = req.body;
-  if(!input || typeof input !== "string") {
-    return res.status(400).json({error: "Invalid input"});
+  if (!input || typeof input !== "string") {
+    return res.status(400).json({ error: "Invalid input" });
   }
   const password = passwordServices.substituteWord(input);
   res.json({ password });
-})
+});
 
-//for sprint 3
-//PUT /api/credentials/:id ---allows updating username, website and password
-//app.put('/api/credentials/:id')
-
-//GET /api/credentials/search? ---Find credentials based on a website thinking about search bars
 
 app.listen(process.env.PORT || port, () => {
   console.log(`Piggy Pass @ localhost:${port}`);

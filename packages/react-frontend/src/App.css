@@ -45,7 +45,8 @@ body {
   overflow-x: hidden;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%; /* Ensures the body and html take up the full height */
@@ -115,4 +116,3 @@ html, body {
     @apply bg-background text-foreground;
   }
 }
-
