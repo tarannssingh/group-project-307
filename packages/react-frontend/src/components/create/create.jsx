@@ -18,6 +18,7 @@ import {
 
 import keyIcon from "../../assets/key.png"
 import subIcon from "../../assets/sub.png"
+import eyeIcon from "../../assets/eye.png"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -122,7 +123,11 @@ const Create = () => {
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
-                                <Input className="username" placeholder="Credential Username" {...field} />
+                                <Input 
+                                className="username" 
+                                placeholder="Credential Username"
+                                {...field} 
+                                />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -131,10 +136,17 @@ const Create = () => {
                         <FormField
                         control={form.control}
                         name="password"
-                        render={({ field }) => (
+                        render={({ field }) => {
+                            const[isPassVis, setIsPassVis] = useState(false);
+                        return (
                             <FormItem>
                             <FormControl>
-                                <Input className="password" placeholder="Credential Password" {...field} />
+                                <Input 
+                                className="password" 
+                                placeholder="Credential Password" 
+                                type={isPassVis ? "text" : "password"}
+                                autocomplete="new-password"
+                                {...field} />
                             </FormControl>
                             <div className="d-flex justify-content-start align-center">
                                 <img
@@ -179,10 +191,18 @@ const Create = () => {
                                     }}
                                     title = "Substitute Password"
                                 />
+                                <img
+                                    src = {eyeIcon}
+                                    alt = "Toggle Visibility"
+                                    className="w-8 h-8 p-1 m-1 cursor-pointer"
+                                    onClick={() => setIsPassVis(!isPassVis)}
+                                    title = "Toggle Visibility"
+                                />
                             </div>
                             <FormMessage />
                             </FormItem>
-                        )}
+                        );
+                        }}
                         />
                         <Button type="submit" className="bg-red-600">Submit</Button>
                     </form>
