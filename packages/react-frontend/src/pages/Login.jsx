@@ -34,7 +34,7 @@ function Login(props) {
       }
     });
     props.setMessage("");
-    setCreds({...creds, password: "", totp: "" }); // Clear form fields
+    setCreds({...creds,email:"", password: "", totp: "" }); // Clear form fields
   }
 
   function changePage() {
