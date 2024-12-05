@@ -18,3 +18,4 @@ PiggyPass securely keeps track of username and passwords with 2 factor authentic
 5. To run the frontend, from the root go to ```packages/react-frontend``` and run ```npm run dev```. The backend must be running for the frontend to work correctly.
 
 # Diagrams
+[Check out our Class Diagram]
