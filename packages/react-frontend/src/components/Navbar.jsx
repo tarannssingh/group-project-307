@@ -105,7 +105,7 @@ export default function Navbar() {
         </div>
         <div className="dropdown">
         <button
-          className="btn btn-secondary dropdown-toggle"
+          className="btn btn-secondary"
           type="button"
           id="dropdownMenuButton"
           data-bs-toggle="dropdown"
@@ -115,7 +115,8 @@ export default function Navbar() {
             border: "none", 
             appearance: "none", 
             boxShadow: "none",
-            paddingRight: "0" 
+            paddingRight: "0",
+            content: "none"
           }}
         >
           <img

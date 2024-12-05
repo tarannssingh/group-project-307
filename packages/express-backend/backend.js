@@ -208,6 +208,16 @@ app.get("/credentials/username/:q", userServicies.authenticateUser, async (req, 
   }
 });
 
+app.get('/credentials/count', async (req, res) => {
+  try {
+    const totalCredentials = await countCredentials();
+    res.status(200).json({ total: totalCredentials });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 //for sprint 3
 //PUT /api/credentials/:id ---allows updating username, website and password
 //app.put('/api/credentials/:id')
