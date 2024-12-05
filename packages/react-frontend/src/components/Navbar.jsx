@@ -23,12 +23,13 @@ export default function Navbar() {
   
     try {
       let url = "";
-      if (searchBy === "Website") {
-        url = `${API_PREFIX}/credentials/${encodeURIComponent(query)}`;
-      } else if (searchBy === "Username") {
-        url = `${API_PREFIX}/credentials/username/${query.trim()}`;
-      }
-  
+      if (searchBy === "Website" || searchBy === "Username") {
+        if (encodeURIComponent(query)) {
+          url = searchBy === "Website" ? `${API_PREFIX}/credentials/website/${encodeURIComponent(query)}` :  `${API_PREFIX}/credentials/username/${encodeURIComponent(query)}`;
+        } else {
+          url = `${API_PREFIX}/credentials`;
+        }
+      } 
       const response = await fetch(url, {
         headers: addAuthHeader(),
       });
@@ -36,7 +37,6 @@ export default function Navbar() {
       if (!response.ok) {
         throw new Error("No credentials found for the given search query.");
       }
-  
       const data = await response.json();
       setResults(Array.isArray(data) ? data : [data]); // Handle single or multiple results
     } catch (err) {

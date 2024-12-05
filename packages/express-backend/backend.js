@@ -166,42 +166,42 @@ app.get("/credentials", userServicies.authenticateUser, async (req, res) => {
   }
 });
 
-// GET /api/credentials/:website-- retrive credential based on website searched
-app.get("/credentials/:website", userServicies.authenticateUser, async (req, res) => {
-  const website = decodeURIComponent(req.params.website);  
+// GET /api/credentials/website/:q-- retrive credential based on website searched
+app.get("/credentials/website/:q", userServicies.authenticateUser, async (req, res) => {
+  const query = decodeURIComponent(req.params.q);  
   try {
-    const credential = await CredentialService.findCredentialByWebsite(website, req.body.jwt.sub);
+    const credential = await CredentialService.findCredentialByWebsite(query, req.body.jwt.sub);
     if (credential) {
-      res.status(200).json(credential);
+      return res.status(200).json(credential);
     } else {
-      res
+      return res
         .status(404)
         .json({ message: "Credential not found for this website" });
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error retrieving credential by website",
+      message: "Error retrieving credential(s)",
       error: error.message,
     });
   }
 });
 
-// GET /api/credentials/:website-- retrive credential based on website searched
-app.get("/credentials/username/:username", userServicies.authenticateUser, async (req, res) => {
-  const { username } = req.params;
+// GET /api/credentials/username/:q-- retrive credential based on website searched
+app.get("/credentials/username/:q", userServicies.authenticateUser, async (req, res) => {
+  const query = decodeURIComponent(req.params.q);  
   try {
     const credential =
-      await CredentialService.findCredentialByUsername(username, req.body.jwt.sub);
+    await CredentialService.findCredentialByUsername(query, req.body.jwt.sub);
     if (credential) {
-      res.status(200).json(credential);
+      return res.status(200).json(credential);
     } else {
-      res
+      return res
         .status(404)
         .json({ message: "Credential not found for this website" });
     }
   } catch (error) {
     res.status(500).json({
-      message: "Error retrieving credential by website",
+      message: "Error retrieving credential(s)",
       error: error.message,
     });
   }
