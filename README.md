@@ -1,10 +1,13 @@
 # group-project-307
 
-# Project Blurb
+# Project Blurb (Vision)
 PiggyPass is a password manager for internet users who struggle to remember passwords or don’t want to risk their accounts getting attacked. 
 <br /><br />
 PiggyPass securely keeps track of username and passwords with 2 factor authentication, database password encryption, and a secure user interface. It offers a centralized location to store passwords and an easy way to search through them. Users has options to generate a secure password that meet standard password requirements and substitute inputted passwords to produce a more secure password. Users are able view parts of their passwords to access their password securely in public or view passwords in their entirety.
 Using Bootstrap we created dialog popups allowing for components to accept and display new information for the user. Using Cypress, we can implement tests for the project through running the website directly allowing for more direct debugging.
+
+# User Stories
+[https://docs.google.com/document/d/1mTgCzb-miKglkNFTxlXBUtG3lIcP98tZp6LwHdCo6i4/edit?tab=t.0](https://docs.google.com/document/d/1mTgCzb-miKglkNFTxlXBUtG3lIcP98tZp6LwHdCo6i4/edit?tab=t.0)
 
 # Contributing
 We are following [Airbnb Eslint Config](https://www.npmjs.com/package/eslint-config-airbnb)
