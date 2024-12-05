@@ -13,9 +13,11 @@ Using Bootstrap we created dialog popups allowing for components to accept and d
 [https://www.figma.com/design/RbxqUP7Gn4Vnx9Q0g6gk2J/307-Group-Project] (https://www.figma.com/design/RbxqUP7Gn4Vnx9Q0g6gk2J/307-Group-Project)
 
 
-# Class Diagram
-[https://lucid.app/lucidchart/1acae02d-cca6-47bd-9e2d-017c5db94af7/edit?viewport_loc=-1625%2C-489%2C2290%2C1248%2C0_0&invitationId=inv_9c4f42e2-2e43-4502-aae8-11e38d57f2da](https://lucid.app/lucidchart/1acae02d-cca6-47bd-9e2d-017c5db94af7/edit?viewport_loc=-1625%2C-489%2C2290%2C1248%2C0_0&invitationId=inv_9c4f42e2-2e43-4502-aae8-11e38d57f2da)
-(You will have to login to lucid.app to see our class diagram)
+# Diagrams
+[Check out our Class Diagram](docs/diagram.md)
+
+# Demo Video
+
 
 # Final Presentation
 [https://docs.google.com/presentation/d/1BHITpHPAKnQ0XUZIlyZafL2kal9cnHxQ1WGuUK5OQSk/edit#slide=id.g31c5eb6deea_3_0](https://docs.google.com/presentation/d/1BHITpHPAKnQ0XUZIlyZafL2kal9cnHxQ1WGuUK5OQSk/edit#slide=id.g31c5eb6deea_3_0)
@@ -42,8 +44,7 @@ We are using [Prettier](https://prettier.io/)
 7. To run the frontend, from the root go to ```packages/react-frontend``` and run ```npm run dev```. The backend must be running for the frontend to work correctly.
 8. To run Prettier run ```npx prettier . --write``` in either the root file, express-backend, or react-frontend to edit all files
 
-# Diagrams
-[Check out our Class Diagram](docs/diagram.md)
+
 
 # Testing
 We are using Cypress E2E testing. 
