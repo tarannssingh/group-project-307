@@ -208,7 +208,7 @@ app.get("/credentials/username/:q", userServicies.authenticateUser, async (req, 
   }
 });
 
-app.get('/credentials/count', async (req, res) => {
+app.get("/credentials/count", async (req, res) => {
   try {
     const totalCredentials = await CredentialService.countCredentials();
     res.status(200).json({ total: totalCredentials });
@@ -217,6 +217,33 @@ app.get('/credentials/count', async (req, res) => {
   }
 });
 
+// Produces a random valid password
+app.get("/randPass", async (req, res) => {
+  try {
+    const password = await passwordServices.passwordGenCheck();
+    res.status(200).json(password);
+  } catch (error) {
+    res
+      .status(400)
+      .json({ message: "Error generating password", error: error.message });
+  }
+});
+
+// Substitutes characters in an input to turn into a password
+app.post("/subPass", (req, res) => {
+  const { input } = req.body;
+  if(!input || typeof input !== "string") {
+    return res.status(400).json({error: "Invalid input"});
+  }
+  const password = passwordServices.substituteWord(input);
+  res.json({ password });
+})
+
+// app.get("/subPass", async(req, res) => {
+//   try {
+//     const substitute = await 
+//   }
+// })
 
 //for sprint 3
 //PUT /api/credentials/:id ---allows updating username, website and password

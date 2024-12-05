@@ -55,18 +55,13 @@
     line-height: 1;
   }
   
-  .auth-button:focus,
-  .auth-button:active,
 
   [type="submit"]:focus,
   [type="submit"]:active,
   [type="reset"]:focus,
-  [type="reset"]:active,
-  [type="button"]:focus,
-  [type="button"]:active {
+  [type="reset"]:active{
     border: 1px solid #DB733F;
     background: #DB733F;
-    color: #ffffff;
     text-decoration: none;
   }
   

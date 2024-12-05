@@ -38,6 +38,7 @@ import { CredContext } from "../../pages/Home"
     const update = useContext(CredContext);
     const [superOpen, setSuperOpen] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [peekedPassword, setPeekedPassword] = useState(false);
     const [credential, setCredential] = useState({
         "username": "",
         "website": "",
@@ -54,7 +55,24 @@ import { CredContext } from "../../pages/Home"
     
     const togglePassword = () => {
         setShowPassword(!showPassword);
-    }
+    };
+    
+    const peekPassword = () => {
+        if (showPassword) {
+            setShowPassword(false);
+            setPeekedPassword(true);
+        } else {
+            setPeekedPassword(!peekedPassword);
+        }
+    };
+    
+    const getPeekedPassword = () => {
+        const { password } = credential;
+        const visible = password.slice(0, Math.ceil(password.length / 2));
+        const hidden = "*".repeat(password.length - visible.length);
+        return visible + hidden;
+    }; 
+    
     return (
         <>
         <div>
@@ -78,14 +96,18 @@ import { CredContext } from "../../pages/Home"
                     </h1>
                     <h1>
                         Password: {" "}
-                        {showPassword ? credential.password: "*****"}
+                        {showPassword ? credential.password : peekedPassword ? getPeekedPassword() : "*****"}
                     </h1>
                     <div className="flex justify-center mt-4 space-x-4 align-items-center">
                         {/* to update */}
                         <Update className="bg-green-500" username={username} website={website} password={password} id={cred_id} update={update} setCredential={setCredential} superOpen={superOpen} setSuperOpen={setSuperOpen}/>
                         {/* to delete */}
                         <Delete cred_id={cred_id} update={update} superOpen={superOpen} setSuperOpen={setSuperOpen}/>
-                        <Button onClick={togglePassword} className="bg-gray-500 ">
+                        <Button onClick={peekPassword} className="bg-orange-500">
+                            {peekedPassword ? "Hide" : "Peek"}
+                        </Button>
+                        {/* to show Password */}
+                        <Button onClick={togglePassword} className="bg-gray-500">
                             {showPassword ? "Hide Password" : "Show Password"}
                         </Button>
                     </div>
@@ -189,7 +211,6 @@ import { CredContext } from "../../pages/Home"
                                 name="password"
                                 render={({ field }) => (
                                     <FormItem>
-                                    {/* <FormLabel>Password</FormLabel> */}
                                     <FormControl>
                                         <Input className="password" placeholder="Credential Password" {...field} />
                                     </FormControl>

@@ -34,7 +34,7 @@ function Login(props) {
       }
     });
     props.setMessage("");
-    setCreds({...creds, password: "", totp: "" }); // Clear form fields
+    setCreds({...creds,email:"", password: "", totp: "" }); // Clear form fields
   }
 
   function changePage() {
@@ -54,8 +54,7 @@ function Login(props) {
             value={creds.email}
             onChange={handleChange}
             className="username"
-          />
-
+          /> 
           <label htmlFor="password">Password</label>
           <input
             type="password"
