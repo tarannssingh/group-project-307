@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import { addAuthHeader, API_PREFIX } from "../utils";
+import { LoginContext } from "../pages/Home";
 
 export default function Navbar() {
   const [searchBy, setSearchBy] = useState("");
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
+  const search = useContext(LoginContext)
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -38,6 +40,7 @@ export default function Navbar() {
         throw new Error("No credentials found for the given search query.");
       }
       const data = await response.json();
+      search.setLogins(Array.isArray(data) ? data : [data])
       setResults(Array.isArray(data) ? data : [data]); // Handle single or multiple results
     } catch (err) {
       setResults([]);
@@ -93,7 +96,7 @@ export default function Navbar() {
       </nav>
       <div className="mt-3">
       {error && <p className="text-danger">{error}</p>}
-      {results.length > 0 && (
+      {/* {results.length > 0 && (
         results.map((result, index) => (
           <div key={index} className="mb-3">
             <p><strong>Website:</strong> {result.website}</p>
@@ -101,7 +104,7 @@ export default function Navbar() {
             <p><strong>Password:</strong> {result.password}</p>
           </div>
         ))
-      )}
+      )} */}
       </div>
     </div>
   );

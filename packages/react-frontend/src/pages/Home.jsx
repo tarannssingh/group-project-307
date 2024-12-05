@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { addAuthHeader } from "../utils";
 export const CredContext = createContext()
+export const LoginContext = createContext()
 
 function Home() {
   const API_PREFIX =  "http://localhost:5478";
@@ -42,16 +43,18 @@ function Home() {
     }, [update])
 
   return (
-    <CredContext.Provider value={{update, setUpdate}}>
-      <Navbar />
-      {/* here is where we create the dashboard */}
-      <Create/>
-      {logins && logins.length > 0 ? logins.map((login) => {
-        return <Credential key={login._id} cred_id={login._id} username={login.username} website={login.website}  password={login.password}/>
-      }) : (
-        <p>No credentials available</p>
-      )}
-    </CredContext.Provider>
+    <LoginContext.Provider value={{logins, setLogins}}>
+      <CredContext.Provider value={{update, setUpdate}}>
+        <Navbar />
+        {/* here is where we create the dashboard */}
+        <Create/>
+        {logins && logins.length > 0 ? logins.map((login) => {
+          return <Credential key={login._id} cred_id={login._id} username={login.username} website={login.website}  password={login.password}/>
+        }) : (
+          <p>No credentials available</p>
+        )}
+      </CredContext.Provider>
+    </LoginContext.Provider>
   );
 }
 export default Home;
