@@ -22,6 +22,7 @@ Using Bootstrap we created dialog popups allowing for components to accept and d
 
 # Github Issues and Sprint Boards
 [https://github.com/users/tarannssingh/projects/1/views/1?filterQuery=](https://github.com/users/tarannssingh/projects/1/views/1?filterQuery=)
+[https://github.com/tarannssingh/group-project-307/issues](https://github.com/tarannssingh/group-project-307/issues)
 
 
 # Documentation
