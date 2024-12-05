@@ -32,9 +32,10 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { addAuthHeader, API_PREFIX } from "../../utils"
 import { jwtDecode } from "jwt-decode"
+import { CredContext } from "../../pages/Home"
  
 const formSchema = z.object ({
     website: z.string().url(),
@@ -46,6 +47,7 @@ const formSchema = z.object ({
 const Create = () => {
     const [message, setMessage] = useState("")
     const [open, setOpen] = useState(false);
+    const update = useContext(CredContext)
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -63,13 +65,14 @@ const Create = () => {
             const response = await fetch(`${API_PREFIX}/credentials`, {
                 method: "POST",
                 headers: addAuthHeader({"Content-Type": "application/json"}),
-                body: JSON.stringify({...values, user_id: decoded.sub})
+                body: JSON.stringify({...values, user_id: decoded.user_id})
             })
             const json = await response.json()
             if (!response.ok) {
                 throw Error(json.error)
             } else {
                 setOpen(false)
+                update.setUpdate(!update.update)
                 form.reset()
             }
             setMessage("")
@@ -82,8 +85,8 @@ const Create = () => {
         <>
         <div>
             <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Card className="transition-colors duration-300 cursor-pointer">
+            <DialogTrigger asChild classname="createDialog">
+                <Card className="transition-colors duration-300 cursor-pointer" style={{ backgroundColor: "#FFC1A1" }}>
                     <CardHeader>
                         <CardTitle>Add Credential</CardTitle>
                     </CardHeader>
@@ -106,7 +109,7 @@ const Create = () => {
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
-                                <Input placeholder="Website URL (Include https://)" {...field} />
+                                <Input className="website" placeholder="Website URL (Include https://www. or Copy Paste URL)" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -118,7 +121,7 @@ const Create = () => {
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
-                                <Input placeholder="Credential Username" {...field} />
+                                <Input className="username" placeholder="Credential Username" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -131,7 +134,7 @@ const Create = () => {
                             <FormItem>
                             {/* <FormLabel>Password</FormLabel> */}
                             <FormControl>
-                                <Input placeholder="Credential Password" {...field} />
+                                <Input className="password" placeholder="Credential Password" {...field} />
                             </FormControl>
                             <img
                                 src={keyIcon}

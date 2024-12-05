@@ -10,7 +10,6 @@ function App() {
   const API_PREFIX =  "http://localhost:5478";
   const INVALID_TOKEN = "INVALID_TOKEN";
   const [token, setToken] = useState(INVALID_TOKEN);
-  const [characters, setCharacters] = useState([]);
   const [message, setMessage] = useState("");
 
   async function loginUser(creds) {
@@ -53,7 +52,7 @@ function App() {
           return response.json().then((payload) => {
             setToken(payload.token);
             setMessage(
-              `Signup successful for user: ${creds.email}! Please use this code in your authenticator app to connect your PiggyPass Account: ${payload.totp_secret}`,
+              `Signup successful for user: ${creds.email}! Please use this code in your authenticator app to connect your PiggyPass Account and then proceed to the login page and log in: ${payload.totp_secret}`,
             );
           });
         } else {
