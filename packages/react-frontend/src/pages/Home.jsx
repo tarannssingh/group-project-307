@@ -4,12 +4,11 @@ import Credential from "../components/credential/credential";
 import Create from "../components/create/create"
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { addAuthHeader } from "../utils";
+import { addAuthHeader, API_PREFIX } from "../utils";
 export const CredContext = createContext()
 export const LoginContext = createContext()
 
 function Home() {
-  const API_PREFIX =  "http://localhost:5478";
   const [logins, setLogins] = useState([])
   const [update, setUpdate] = useState(true)
   const navigate = useNavigate();

@@ -17,6 +17,7 @@ import {
 
 
 import keyIcon from "../../assets/key.png"
+import subIcon from "../../assets/sub.png"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -155,6 +156,28 @@ const Create = () => {
                                     }
                                   }}
                                 title="Generate Password"
+                            />
+                            <img
+                                src={subIcon}
+                                alt="Substitute Password"
+                                className="cursor-pointer w-8 h-8"
+                                onClick={async () => {
+                                    try {
+                                        const response = await fetch(`${API_PREFIX}/subPass`, {
+                                            method: "POST",
+                                            headers: {"Content-Type": "application/json"},
+                                            body: JSON.stringify({input: form.getValues("password")}),
+                                        });
+                                        if(!response.ok) {
+                                            throw new Error("Failed to substitute password");
+                                        }
+                                        const data = await response.json();
+                                        form.setValue("password", data.password);
+                                    } catch (error) {
+                                        console.error("Error substituting password:", error.message);
+                                    }
+                                }}
+                                title = "Substitute Password"
                             />
                             <FormMessage />
                             </FormItem>

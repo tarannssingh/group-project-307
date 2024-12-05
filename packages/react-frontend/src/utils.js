@@ -10,4 +10,6 @@ export function addAuthHeader(otherHeaders = {}) {
     }
 }
 
-export const API_PREFIX = "http://localhost:5478";
+export const API_PREFIX = import.meta.env.VITE_BASE_URL || "https://piggypass-api-e9hmcmbebkfabyam.westus3-01.azurewebsites.net"
+
+// "http://localhost:5478";

@@ -54,8 +54,7 @@ function Login(props) {
             value={creds.email}
             onChange={handleChange}
             className="username"
-          />
-
+          /> 
           <label htmlFor="password">Password</label>
           <input
             type="password"

@@ -217,7 +217,7 @@ app.get("/credentials/count", async (req, res) => {
   }
 });
 
-// Retrieves a random valid password
+// Produces a random valid password
 app.get("/randPass", async (req, res) => {
   try {
     const password = await passwordServices.passwordGenCheck();
@@ -228,6 +228,16 @@ app.get("/randPass", async (req, res) => {
       .json({ message: "Error generating password", error: error.message });
   }
 });
+
+// Substitutes characters in an input to turn into a password
+app.post("/subPass", (req, res) => {
+  const { input } = req.body;
+  if(!input || typeof input !== "string") {
+    return res.status(400).json({error: "Invalid input"});
+  }
+  const password = passwordServices.substituteWord(input);
+  res.json({ password });
+})
 
 // app.get("/subPass", async(req, res) => {
 //   try {
