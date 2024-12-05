@@ -50,7 +50,7 @@ import { CredContext } from "../../pages/Home"
             "password": password
             }
         setCredential(json)
-    }, [credential])
+    }, [username, website, password])
     
     return (
         <>
@@ -77,7 +77,7 @@ import { CredContext } from "../../pages/Home"
                         Password: 
                         {" " + credential.password}
                     </h1>
-                    <div className="mt-4 flex space-x-4 justify-center">
+                    <div className="flex justify-center mt-4 space-x-4">
                         {/* to update */}
                         <Update username={username} website={website} password={password} id={cred_id} update={update} setCredential={setCredential} superOpen={superOpen} setSuperOpen={setSuperOpen}/>
                         {/* to delete */}
