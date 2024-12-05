@@ -2,13 +2,31 @@ import React, { useContext, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import { addAuthHeader, API_PREFIX } from "../utils";
 import { LoginContext } from "../pages/Home";
+import { Option1, Option2, Option3 } from './Settings';  // Named imports
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 
 export default function Navbar() {
+  
   const [searchBy, setSearchBy] = useState("");
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
   const search = useContext(LoginContext)
+
+  const [showModal, setShowModal] = useState(null);
+
+  // Function to show a specific modal
+  const handleShowModal = (modalType) => {
+    setShowModal(modalType);  // Set the modal type to show
+  };
+
+  // Function to close the modal
+  const handleCloseModal = () => {
+    setShowModal(null);  // Reset modal visibility
+  };
+
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -85,14 +103,47 @@ export default function Navbar() {
             </button>
           </form>
         </div>
-        <a href="/settings">
+        <div className="dropdown">
+        <button
+          className="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          style={{
+            backgroundColor: "#FFC1A1", 
+            border: "none", 
+            appearance: "none", 
+            boxShadow: "none",
+            paddingRight: "0" 
+          }}
+        >
           <img
             src="/gear-fill.svg"
-            alt="settings icon"
+            alt="Settings"
             width="32"
             height="32"
-          ></img>
-        </a>
+            
+          />
+        </button>
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton" style={{ marginLeft: "-100px" }}>
+          <button className="dropdown-item" type="button" onClick={() => handleShowModal('Option1')}>
+            Profile
+          </button>
+          <button className="dropdown-item" type="button" onClick={() => handleShowModal('Option2')}>
+            Log Out
+          </button>
+          <button className="dropdown-item" type="button" onClick={() => handleShowModal('Option3')}>
+            Delete Account
+          </button>
+        </div>
+      </div>
+
+      {/* Render the corresponding modal */}
+      {showModal === 'Option1' && <Option1 show={true} onClose={handleCloseModal} />}
+      {showModal === 'Option2' && <Option2 show={true} onClose={handleCloseModal} />}
+      {showModal === 'Option3' && <Option3 show={true} onClose={handleCloseModal} />}
+    
       </nav>
       <div className="mt-3">
       {error && <p className="text-danger">{error}</p>}
