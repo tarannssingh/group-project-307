@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import Navbar from "./../components/Navbar";
 import Credential from "../components/credential/credential";
 import Create from "../components/create/create"
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { addAuthHeader } from "../utils";
-
-
+export const CredContext = createContext()
+export const LoginContext = createContext()
 
 function Home() {
   const API_PREFIX =  "http://localhost:5478";
   const [logins, setLogins] = useState([])
+  const [update, setUpdate] = useState(true)
   const navigate = useNavigate();
   useEffect(() => {
     try {
@@ -23,33 +24,37 @@ function Home() {
       if (exp < cur) {
         throw Error("Expired Token. Please login.")
       }
-
-      decoded
+      // decoded
       fetch(`${API_PREFIX}/credentials`, {
-        method: "POST",
+        method: "GET",
         headers: addAuthHeader({"Content-Type": "application/json"}),
       })
       .then((response) => {
         return response.json()
       })
       .then((json) => {
-        setLogins(json.logins)
+        setLogins(json)
+        setUpdate(false)
       })
     } catch(error) {
       console.log(error)
         navigate("/login");
     }
-    }, [])
+    }, [update])
 
   return (
-    <div>
-      <Navbar />
-      {/* here is where we create the dashboard */}
-      <Create/>
-      {/* {logins.map(() => {
-        <Credential username="" website="" password=""/>
-      })} */}
-    </div>
+    <LoginContext.Provider value={{logins, setLogins}}>
+      <CredContext.Provider value={{update, setUpdate}}>
+        <Navbar />
+        {/* here is where we create the dashboard */}
+        <Create/>
+        {logins && logins.length > 0 ? logins.map((login) => {
+          return <Credential key={login._id} cred_id={login._id} username={login.username} website={login.website}  password={login.password}/>
+        }) : (
+          <p>No credentials available</p>
+        )}
+      </CredContext.Provider>
+    </LoginContext.Provider>
   );
 }
 export default Home;

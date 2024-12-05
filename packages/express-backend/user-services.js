@@ -111,10 +111,16 @@ const authenticateUser = (req, res, next) => {
       process.env.JWT_SIGNING_SECRET,
       (error, decoded) => {
         if (decoded) {
+          if (!req.body) {
+            req.body = {}
+          }
+          req.body.jwt = decoded
+          console.log(req.body);
+          
           next();
         } else {
           return res.status(401).json({
-            message: error
+            message: "Invalid or expired token. Please login again."
           })
         }
       }

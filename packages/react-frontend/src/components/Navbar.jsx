@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Form from 'react-bootstrap/Form';
+import { addAuthHeader, API_PREFIX } from "../utils";
+import { LoginContext } from "../pages/Home";
 import { Option1, Option2, Option3 } from './Settings';  // Named imports
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -7,11 +9,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 export default function Navbar() {
   
-  const API_PREFIX =  "http://localhost:5478";
   const [searchBy, setSearchBy] = useState("");
-  const[query, setQuery] = useState("");
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [error, setError] = useState("");
+  const search = useContext(LoginContext)
 
   const [showModal, setShowModal] = useState(null);
 
@@ -28,29 +30,35 @@ export default function Navbar() {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if(!query.trim()) {
-      setError("Please enter a search query");
-      return;
-    }
-    if(!searchBy) {
+    // if (!query.trim()) {
+    //   setError("Please enter a search query");
+    //   return;
+    // }
+    if (!searchBy) {
       setError("Please select a search criteria.");
       return;
+    } else {
+      setError("")
     }
-
+  
     try {
       let url = "";
-      if (searchBy === "Website") {
-        url = `${API_PREFIX}/credentials/${query}`;
-      } else if (searchBy === "Username") {
-        url = `${API_PREFIX}/credentials/username/${query}`;
-      }
-
-      const response = await fetch(url);
+      if (searchBy === "Website" || searchBy === "Username") {
+        if (encodeURIComponent(query)) {
+          url = searchBy === "Website" ? `${API_PREFIX}/credentials/website/${encodeURIComponent(query)}` :  `${API_PREFIX}/credentials/username/${encodeURIComponent(query)}`;
+        } else {
+          url = `${API_PREFIX}/credentials`;
+        }
+      } 
+      const response = await fetch(url, {
+        headers: addAuthHeader(),
+      });
+  
       if (!response.ok) {
         throw new Error("No credentials found for the given search query.");
       }
-
       const data = await response.json();
+      search.setLogins(Array.isArray(data) ? data : [data])
       setResults(Array.isArray(data) ? data : [data]); // Handle single or multiple results
     } catch (err) {
       setResults([]);
@@ -83,14 +91,14 @@ export default function Navbar() {
               </Form.Select>
             </div>
             <input
-              className="form-control me-2 m-0"
+              className="m-0 form-control me-2"
               type="search"
               placeholder="Search"
               aria-label="Search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
-            <button className="btn bg-white" type="submit">
+            <button className="bg-white btn" type="submit">
               Search
             </button>
           </form>
@@ -139,7 +147,7 @@ export default function Navbar() {
       </nav>
       <div className="mt-3">
       {error && <p className="text-danger">{error}</p>}
-      {results.length > 0 && (
+      {/* {results.length > 0 && (
         results.map((result, index) => (
           <div key={index} className="mb-3">
             <p><strong>Website:</strong> {result.website}</p>
@@ -147,7 +155,7 @@ export default function Navbar() {
             <p><strong>Password:</strong> {result.password}</p>
           </div>
         ))
-      )}
+      )} */}
       </div>
     </div>
   );
