@@ -72,14 +72,12 @@ function SignUp(props) {
           <p className="py-2">
             Already have a PiggyPass Account?{" "}
             <Link to="/login" className="auth-link" onClick={changePage}>
-               Log In here!
+              Log In here!
             </Link>
           </p>
         </form>
         {/* Display the message here */}
-        {props.message && (
-          <p className="auth-message">{props.message}</p>
-        )}
+        {props.message && <p className="auth-message">{props.message}</p>}
       </div>
     </div>
   );

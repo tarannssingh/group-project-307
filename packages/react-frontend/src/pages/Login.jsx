@@ -1,4 +1,3 @@
-// Login.jsx
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Auth.css";
@@ -34,7 +33,7 @@ function Login(props) {
       }
     });
     props.setMessage("");
-    setCreds({...creds,email:"", password: "", totp: "" }); // Clear form fields
+    setCreds({ ...creds, email: "", password: "", totp: "" }); // Clear form fields
   }
 
   function changePage() {
@@ -54,7 +53,7 @@ function Login(props) {
             value={creds.email}
             onChange={handleChange}
             className="username"
-          /> 
+          />
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -89,9 +88,7 @@ function Login(props) {
           </p>
         </form>
         {/* Display the message here */}
-        {props.message && (
-          <p className="auth-message">{props.message}</p>
-        )}
+        {props.message && <p className="auth-message">{props.message}</p>}
       </div>
     </div>
   );

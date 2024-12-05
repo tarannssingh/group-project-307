@@ -59,14 +59,6 @@ async function encrypt(plainText) {
   return btoa(String.fromCharCode(...encryptedArray));
 }
 
-// test
-// (async () => {
-//     const encrypted = await encrypt("hi, my name is Taran");
-//     console.log(encrypted);
-//     const decrypted = await decrypt(encrypted)
-//     console.log(decrypted);
-// })()
-
 const substitutionTable = {
   a: ["@", "4", "a"],
   b: ["8", "B", "b"],
@@ -106,17 +98,12 @@ const substituteWord = (word) => {
         const subs = substitutionTable[letter];
         stronger += subs[Math.floor(Math.random() * subs.length)];
       } else {
-        stronger += letter
+        stronger += letter;
       }
     });
-  return stronger 
+  return stronger;
 };
 
-// (() => {
-//     substituteWord("myBestPassword")
-// })()
-
-  
 const passwordGenCheck = () => {
   var randLength = 1;
   var randPW = "";
@@ -158,73 +145,59 @@ const passwordGenerator = (pwLength) => {
 };
 
 const validUTF8 = (pw) => {
-    try {
-        const encoded = new TextEncoder().encode(pw);
-        const decoded = new TextDecoder().decode(encoded);
-        return decoded === pw;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    const encoded = new TextEncoder().encode(pw);
+    const decoded = new TextDecoder().decode(encoded);
+    return decoded === pw;
+  } catch (error) {
+    return false;
+  }
+};
 
 const passwordStrength = (pw) => {
-    const criteria = {
-        length: false,
-        uppercase: false,
-        lowercase: false,
-        number: false,
-        speChar: false,
-    };
+  const criteria = {
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    number: false,
+    speChar: false,
+  };
 
-    if(!validUTF8(pw)) {
-        return "Invalid";
-    }
+  if (!validUTF8(pw)) {
+    return "Invalid";
+  }
 
-    if(pw.length >= 14) {
-        criteria.length = true;
-    }
-    if(/[A-Z]/.test(pw)) {
-        criteria.uppercase = true;
-    }
-    if(/[a-z]/.test(pw)) {
-        criteria.lowercase = true;
-    }
-    if(/\d/.test(pw)) {
-        criteria.number = true;
-    }
-    if(/[!@#$%^&*]/.test(pw)) {
-        criteria.speChar = true;
-    }
-    const met = Object.values(criteria).filter(Boolean).length;
-    switch(met) {
-        case 1:
-            return "Weak";
-        case 2:
-            return "Middling";
-        case 3:
-            return "Moderate"
-        case 4:
-            return "Strong"
-        case 5:
-            return "Very Strong"
-        default:
-            return "Invalid"
-    }
-}
-
-// test
-// (async () => {
-//     const weak = await passwordStrength("ooo");
-//     console.log(weak);
-//     const password = await passwordStrength("89y82dh2d0#@$1Es");
-//     console.log(password);
-//     const generator = await passwordGenerator(10);
-//     console.log(generator);
-//     const autoGenerator = await passwordGenCheck();
-//     console.log(autoGenerator);
-//     const autoCheck = await passwordStrength(autoGenerator);
-//     console.log(autoCheck);
-// })()
+  if (pw.length >= 14) {
+    criteria.length = true;
+  }
+  if (/[A-Z]/.test(pw)) {
+    criteria.uppercase = true;
+  }
+  if (/[a-z]/.test(pw)) {
+    criteria.lowercase = true;
+  }
+  if (/\d/.test(pw)) {
+    criteria.number = true;
+  }
+  if (/[!@#$%^&*]/.test(pw)) {
+    criteria.speChar = true;
+  }
+  const met = Object.values(criteria).filter(Boolean).length;
+  switch (met) {
+    case 1:
+      return "Weak";
+    case 2:
+      return "Middling";
+    case 3:
+      return "Moderate";
+    case 4:
+      return "Strong";
+    case 5:
+      return "Very Strong";
+    default:
+      return "Invalid";
+  }
+};
 
 export default {
   decrypt,
