@@ -3,7 +3,7 @@ const otplib = require("otplib");
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: "http://localhost:5173/",
+    baseUrl: "https://delightful-dune-019b8a21e.5.azurestaticapps.net/",
     setupNodeEvents(on, config) {
       // implement node event listeners here
       on("task", {
