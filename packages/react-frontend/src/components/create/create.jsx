@@ -107,7 +107,7 @@ const Create = () => {
                         render={({ field }) => (
                             <FormItem>
                             <FormControl>
-                                <Input className="website" placeholder="Website URL (Include https://)" {...field} />
+                                <Input className="website" placeholder="Website URL (Include https://www. or Copy Paste URL)" {...field} />
                             </FormControl>
                             <FormMessage />
                             </FormItem>

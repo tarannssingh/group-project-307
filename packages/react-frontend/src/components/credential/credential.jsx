@@ -160,7 +160,7 @@ import { CredContext } from "../../pages/Home"
                                 render={({ field }) => (
                                     <FormItem>
                                     <FormControl>
-                                        <Input disabled={true} className="website" placeholder="Website URL (Include https://)" {...field} />
+                                        <Input disabled={true} className="website" placeholder="Website URL (Include https://www. or Copy Paste URL)" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
