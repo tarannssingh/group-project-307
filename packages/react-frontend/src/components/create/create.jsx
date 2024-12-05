@@ -86,7 +86,7 @@ const Create = () => {
         <>
         <div>
             <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild classname="createDialog">
+            <DialogTrigger asChild className="createDialog">
                 <Card className="transition-colors duration-300 cursor-pointer" style={{ backgroundColor: "#FFC1A1" }}>
                     <CardHeader>
                         <CardTitle>Add Credential</CardTitle>
@@ -133,52 +133,53 @@ const Create = () => {
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                            {/* <FormLabel>Password</FormLabel> */}
                             <FormControl>
                                 <Input className="password" placeholder="Credential Password" {...field} />
                             </FormControl>
-                            <img
-                                src={keyIcon}
-                                alt="Generate Password"
-                                className="cursor-pointer w-8 h-8"
-                                onClick={async () => {
-                                    try {
-                                        const response = await fetch(`${API_PREFIX}/randPass`, {
-                                            method: "GET",
-                                        });
-                                        if (!response.ok) {
-                                            throw new Error("Failed to fetch password");
+                            <div className="d-flex justify-content-start align-center">
+                                <img
+                                    src={keyIcon}
+                                    alt="Generate Password"
+                                    className="w-8 h-8 p-1 m-2 cursor-pointer"
+                                    onClick={async () => {
+                                        try {
+                                            const response = await fetch(`${API_PREFIX}/randPass`, {
+                                                method: "GET",
+                                            });
+                                            if (!response.ok) {
+                                                throw new Error("Failed to fetch password");
+                                            }
+                                            const data = await response.json();
+                                            form.setValue("password", data);
+                                        } catch (error) {
+                                            console.error("Error generating password:", error.message);
                                         }
-                                        const data = await response.json();
-                                        form.setValue("password", data);
-                                    } catch (error) {
-                                        console.error("Error generating password:", error.message);
-                                    }
-                                  }}
-                                title="Generate Password"
-                            />
-                            <img
-                                src={subIcon}
-                                alt="Substitute Password"
-                                className="cursor-pointer w-8 h-8"
-                                onClick={async () => {
-                                    try {
-                                        const response = await fetch(`${API_PREFIX}/subPass`, {
-                                            method: "POST",
-                                            headers: {"Content-Type": "application/json"},
-                                            body: JSON.stringify({input: form.getValues("password")}),
-                                        });
-                                        if(!response.ok) {
-                                            throw new Error("Failed to substitute password");
+                                    }}
+                                    title="Generate Password"
+                                />
+                                <img
+                                    src={subIcon}
+                                    alt="Substitute Password"
+                                    className="w-8 h-8 p-1 m-2 cursor-pointer"
+                                    onClick={async () => {
+                                        try {
+                                            const response = await fetch(`${API_PREFIX}/subPass`, {
+                                                method: "POST",
+                                                headers: {"Content-Type": "application/json"},
+                                                body: JSON.stringify({input: form.getValues("password")}),
+                                            });
+                                            if(!response.ok) {
+                                                throw new Error("Failed to substitute password");
+                                            }
+                                            const data = await response.json();
+                                            form.setValue("password", data.password);
+                                        } catch (error) {
+                                            console.error("Error substituting password:", error.message);
                                         }
-                                        const data = await response.json();
-                                        form.setValue("password", data.password);
-                                    } catch (error) {
-                                        console.error("Error substituting password:", error.message);
-                                    }
-                                }}
-                                title = "Substitute Password"
-                            />
+                                    }}
+                                    title = "Substitute Password"
+                                />
+                            </div>
                             <FormMessage />
                             </FormItem>
                         )}
