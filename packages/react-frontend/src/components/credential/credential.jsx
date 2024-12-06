@@ -23,6 +23,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import keyIcon from "../../../public/key.png"
+import subIcon from "../../../public/sub.png"
+import eyeIcon from "../../../public/eye.png"
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -242,21 +246,76 @@ const Update = ({
                     )}
                   />
                   <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            className="password"
-                            placeholder="Credential Password"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => {
+                        const[isPassVis, setIsPassVis] = useState(false);
+                        return (
+                            <FormItem>
+                            <FormControl>
+                                <Input 
+                                className="password" 
+                                placeholder="Credential Password" 
+                                type={isPassVis ? "text" : "password"}
+                                autocomplete="new-password"
+                                {...field} />
+                            </FormControl>
+                            <div className="d-flex justify-content-start align-center">
+                                <img
+                                    src={keyIcon}
+                                    alt="Generate Password"
+                                    className="w-8 h-8 p-1 m-2 cursor-pointer"
+                                    onClick={async () => {
+                                        try {
+                                            const response = await fetch(`${API_PREFIX}/randPass`, {
+                                                method: "GET",
+                                            });
+                                            if (!response.ok) {
+                                                throw new Error("Failed to fetch password");
+                                            }
+                                            const data = await response.json();
+                                            form.setValue("password", data);
+                                        } catch (error) {
+                                            console.error("Error generating password:", error.message);
+                                        }
+                                    }}
+                                    title="Generate Password"
+                                />
+                                <img
+                                    src={subIcon}
+                                    alt="Substitute Password"
+                                    className="w-8 h-8 p-1 m-1 cursor-pointer"
+                                    onClick={async () => {
+                                        try {
+                                            const response = await fetch(`${API_PREFIX}/subPass`, {
+                                                method: "POST",
+                                                headers: {"Content-Type": "application/json"},
+                                                body: JSON.stringify({input: form.getValues("password")}),
+                                            });
+                                            if(!response.ok) {
+                                                throw new Error("Failed to substitute password");
+                                            }
+                                            const data = await response.json();
+                                            form.setValue("password", data.password);
+                                        } catch (error) {
+                                            console.error("Error substituting password:", error.message);
+                                        }
+                                    }}
+                                    title = "Substitute Password"
+                                />
+                                <img
+                                    src = {eyeIcon}
+                                    alt = "Toggle Visibility"
+                                    className="w-8 h-8 p-1 m-1 cursor-pointer"
+                                    onClick={() => setIsPassVis(!isPassVis)}
+                                    title = "Toggle Visibility"
+                                />
+                            </div>
+                            <FormMessage />
+                            </FormItem>
+                        );
+                      }}
+                      />
                   <Button type="submit" className="bg-yellow-400">
                     Yes
                   </Button>
@@ -291,22 +350,163 @@ const Delete = ({ update, cred_id, setSuperOpen }) => {
     } catch (error) {
       console.log(error);
     }
-  };
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="bg-red-400">Delete</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Are you sure sure you want to delete?</DialogTitle>
-          <DialogDescription className="pt-4">
-            <Button onClick={onDelete} className="bg-yellow-400">
-              Yes
-            </Button>
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
-  );
-};
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+            <Button className="bg-green-400">Update</Button>
+        </DialogTrigger>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Are you sure you want to update?</DialogTitle>
+                <DialogDescription className="pt-4">
+                        <div>
+                            <Form {...form}>
+                            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+                                <FormField
+                                control={form.control}
+                                name="website"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormControl>
+                                        <Input disabled={true} className="website" placeholder="Website URL (Include https://www. or Copy Paste URL)" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                                />
+                                <FormField
+                                control={form.control}
+                                name="username"
+                                render={({ field }) => (
+                                    <FormItem>
+                                    <FormControl>
+                                        <Input 
+                                        className="username" placeholder="Credential Username" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                                />
+                                <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => {
+                                    const[isPassVis, setIsPassVis] = useState(false);
+                                return (
+                                    <FormItem>
+                                    <FormControl>
+                                        <Input 
+                                        className="password" 
+                                        placeholder="Credential Password"
+                                        type={isPassVis ? "text" : "password"}
+                                        {...field} />
+                                    </FormControl>
+                                    <div className="d-flex justify-content-start align-center">
+                                        <img
+                                            src={keyIcon}
+                                            alt="Generate Password"
+                                            className="w-8 h-8 p-1 m-2 cursor-pointer"
+                                            onClick={async () => {
+                                                try {
+                                                    const response = await fetch(`${API_PREFIX}/randPass`, {
+                                                        method: "GET",
+                                                    });
+                                                    if (!response.ok) {
+                                                        throw new Error("Failed to fetch password");
+                                                    }
+                                                    const data = await response.json();
+                                                    form.setValue("password", data);
+                                                } catch (error) {
+                                                    console.error("Error generating password:", error.message);
+                                                }
+                                            }}
+                                            title="Generate Password"
+                                        />
+                                        <img
+                                            src={subIcon}
+                                            alt="Substitute Password"
+                                            className="w-8 h-8 p-1 m-1 cursor-pointer"
+                                            onClick={async () => {
+                                                try {
+                                                    const response = await fetch(`${API_PREFIX}/subPass`, {
+                                                        method: "POST",
+                                                        headers: {"Content-Type": "application/json"},
+                                                        body: JSON.stringify({input: form.getValues("password")}),
+                                                    });
+                                                    if(!response.ok) {
+                                                        throw new Error("Failed to substitute password");
+                                                    }
+                                                    const data = await response.json();
+                                                    form.setValue("password", data.password);
+                                                } catch (error) {
+                                                    console.error("Error substituting password:", error.message);
+                                                }
+                                            }}
+                                            title = "Substitute Password"
+                                        />
+                                        <img
+                                            src = {eyeIcon}
+                                            alt = "Toggle Visibility"
+                                            className="w-8 h-8 p-1 m-1 cursor-pointer"
+                                            onClick={() => setIsPassVis(!isPassVis)}
+                                            title = "Toggle Visibility"
+                                        />
+                                    </div>
+                                    <FormMessage />
+                                    </FormItem>
+                                );
+                            }}
+                                />
+                                <Button type="submit" className="bg-yellow-400">Yes</Button>
+                            </form>
+                            <p className="pt-4">
+                                {message}
+                            </p>
+                            </Form>
+                        </div>
+                </DialogDescription>
+            </DialogHeader>
+        </DialogContent>
+        </Dialog>
+    );
+  }
+
+
+
+  const Delete = ({update, cred_id, setSuperOpen}) => {
+    const [open, setOpen] = useState(false)
+    const onDelete = async () => {
+        try {
+            const response = await fetch(`${API_PREFIX}/credentials`, {
+                method: "DELETE",
+                headers: addAuthHeader({"Content-Type": "application/json"}),
+                body: JSON.stringify({_id: cred_id})
+            })
+            if (!response.ok) {
+                const json = await response.json()
+                throw Error(json.error)
+            } else {
+                setOpen(false)
+                setSuperOpen(false)
+                update.setUpdate(!update.update)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        }
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+            <Button className="bg-red-400">Delete</Button>
+        </DialogTrigger>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Are you sure sure you want to delete?</DialogTitle>
+                <DialogDescription className="pt-4">
+                    <Button onClick={onDelete} className="bg-yellow-400">Yes</Button>
+                </DialogDescription>
+            </DialogHeader>
+        </DialogContent>
+        </Dialog>
+    );
+  }}

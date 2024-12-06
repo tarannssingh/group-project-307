@@ -12,7 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { Button } from "@/components/ui/button";
+
+import keyIcon from "../../../public/key.png"
+import subIcon from "../../../public/sub.png"
+import eyeIcon from "../../../public/eye.png"
+
+import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -134,86 +139,75 @@ const Create = () => {
                       <FormField
                         control={form.control}
                         name="password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Input
-                                className="password"
-                                placeholder="Credential Password"
-                                {...field}
-                              />
-                            </FormControl>
-                            <div className="d-flex justify-content-start align-center">
-                              <img
-                                src="/key.png"
-                                alt="Generate Password"
-                                className="w-8 h-8 p-1 m-2 cursor-pointer"
-                                onClick={async () => {
-                                  try {
-                                    const response = await fetch(
-                                      `${API_PREFIX}/randPass`,
-                                      {
-                                        method: "GET",
-                                      },
-                                    );
-                                    if (!response.ok) {
-                                      throw new Error(
-                                        "Failed to fetch password",
-                                      );
-                                    }
-                                    const data = await response.json();
-                                    form.setValue("password", data);
-                                  } catch (error) {
-                                    console.error(
-                                      "Error generating password:",
-                                      error.message,
-                                    );
-                                  }
-                                }}
-                                title="Generate Password"
-                              />
-                              <img
-                                src="/sub.png"
-                                alt="Substitute Password"
-                                className="w-8 h-8 p-1 m-1 cursor-pointer"
-                                onClick={async () => {
-                                  try {
-                                    const response = await fetch(
-                                      `${API_PREFIX}/subPass`,
-                                      {
-                                        method: "POST",
-                                        headers: {
-                                          "Content-Type": "application/json",
-                                        },
-                                        body: JSON.stringify({
-                                          input: form.getValues("password"),
-                                        }),
-                                      },
-                                    );
-                                    if (!response.ok) {
-                                      throw new Error(
-                                        "Failed to substitute password",
-                                      );
-                                    }
-                                    const data = await response.json();
-                                    form.setValue("password", data.password);
-                                  } catch (error) {
-                                    console.error(
-                                      "Error substituting password:",
-                                      error.message,
-                                    );
-                                  }
-                                }}
-                                title="Substitute Password"
-                              />
-                            </div>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <Button type="submit" className="bg-red-600">
-                        Submit
-                      </Button>
+                        render={({ field }) => {
+                            const[isPassVis, setIsPassVis] = useState(false);
+                            return (
+                                <FormItem>
+                                <FormControl>
+                                    <Input 
+                                    className="password" 
+                                    placeholder="Credential Password" 
+                                    type={isPassVis ? "text" : "password"}
+                                    autocomplete="new-password"
+                                    {...field} />
+                                </FormControl>
+                                <div className="d-flex justify-content-start align-center">
+                                    <img
+                                        src={keyIcon}
+                                        alt="Generate Password"
+                                        className="w-8 h-8 p-1 m-2 cursor-pointer"
+                                        onClick={async () => {
+                                            try {
+                                                const response = await fetch(`${API_PREFIX}/randPass`, {
+                                                    method: "GET",
+                                                });
+                                                if (!response.ok) {
+                                                    throw new Error("Failed to fetch password");
+                                                }
+                                                const data = await response.json();
+                                                form.setValue("password", data);
+                                            } catch (error) {
+                                                console.error("Error generating password:", error.message);
+                                            }
+                                        }}
+                                        title="Generate Password"
+                                    />
+                                    <img
+                                        src={subIcon}
+                                        alt="Substitute Password"
+                                        className="w-8 h-8 p-1 m-1 cursor-pointer"
+                                        onClick={async () => {
+                                            try {
+                                                const response = await fetch(`${API_PREFIX}/subPass`, {
+                                                    method: "POST",
+                                                    headers: {"Content-Type": "application/json"},
+                                                    body: JSON.stringify({input: form.getValues("password")}),
+                                                });
+                                                if(!response.ok) {
+                                                    throw new Error("Failed to substitute password");
+                                                }
+                                                const data = await response.json();
+                                                form.setValue("password", data.password);
+                                            } catch (error) {
+                                                console.error("Error substituting password:", error.message);
+                                            }
+                                        }}
+                                        title = "Substitute Password"
+                                    />
+                                    <img
+                                        src = {eyeIcon}
+                                        alt = "Toggle Visibility"
+                                        className="w-8 h-8 p-1 m-1 cursor-pointer"
+                                        onClick={() => setIsPassVis(!isPassVis)}
+                                        title = "Toggle Visibility"
+                                    />
+                                </div>
+                                <FormMessage />
+                                </FormItem>
+                            );
+                        }}
+                        />
+                        <Button type="submit" className="bg-red-600">Submit</Button>
                     </form>
                     <div className="pt-4">
                       <p>{message}</p>
