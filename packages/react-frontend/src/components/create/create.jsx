@@ -126,11 +126,11 @@ const Create = () => {
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
-                                <Input 
-                                className="username" 
+                              <Input
+                                className="username"
                                 placeholder="Credential Username"
-                                {...field} 
-                                />
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>

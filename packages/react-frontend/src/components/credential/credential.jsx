@@ -20,8 +20,8 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 import keyIcon from "../../../public/key.png"
 import subIcon from "../../../public/sub.png"
@@ -196,6 +196,104 @@ const Update = ({
       console.log(error);
       setMessage(error.message);
     }
+  };
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-green-400">Update</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Are you sure you want to update?</DialogTitle>
+          <DialogDescription className="pt-4">
+            <div>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(handleSubmit)}
+                  className="space-y-8"
+                >
+                  <FormField
+                    control={form.control}
+                    name="website"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            disabled={true}
+                            className="website"
+                            placeholder="Website URL (Include https://www. or Copy Paste URL)"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            className="username"
+                            placeholder="Credential Username"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            className="password"
+                            placeholder="Credential Password"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="bg-yellow-400">
+                    Yes
+                  </Button>
+                </form>
+                <p className="pt-4">{message}</p>
+              </Form>
+            </div>
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const Delete = ({ update, cred_id, setSuperOpen }) => {
+  const [open, setOpen] = useState(false);
+  const onDelete = async () => {
+    try {
+      const response = await fetch(`${API_PREFIX}/credentials`, {
+        method: "DELETE",
+        headers: addAuthHeader({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ _id: cred_id }),
+      });
+      if (!response.ok) {
+        const json = await response.json();
+        throw Error(json.error);
+      } else {
+        setOpen(false);
+        setSuperOpen(false);
+        update.setUpdate(!update.update);
+      }
+    } catch (error) {
+      console.log(error);
     }
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -315,7 +413,7 @@ const Update = ({
             </DialogHeader>
         </DialogContent>
         </Dialog>
-    )
+    );
   }
 
 
@@ -355,5 +453,5 @@ const Update = ({
             </DialogHeader>
         </DialogContent>
         </Dialog>
-    )
-  }
+    );
+  }}
