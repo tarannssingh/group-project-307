@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import eyeIcon from "../../assets/eye_icon.svg";
+import eyeIcon from "../../assets/eye.png";
 
 const pswInput = ({ id, placeholder }) => {
   const [isVisible, setIsVisible] = useState(false);

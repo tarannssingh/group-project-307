@@ -266,7 +266,6 @@ app.post("/subPass", (req, res) => {
   res.json({ password });
 });
 
-
 app.listen(process.env.PORT || port, () => {
   console.log(`Piggy Pass @ localhost:${port}`);
 });

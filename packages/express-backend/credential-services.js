@@ -48,7 +48,6 @@ function findCredentialById(id) {
   return Credential.findById(id);
 }
 
-
 export default {
   findAllCredentials,
   findCredentialById,
