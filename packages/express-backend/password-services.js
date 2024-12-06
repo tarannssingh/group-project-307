@@ -95,7 +95,7 @@ const substitutionTable = {
   7: ["y", "Y", "7"],
   8: ["b", "B", "8"],
   9: ["g", "G", "9"],
-  0: ["O", "o", "0"]
+  0: ["O", "o", "0"],
 };
 
 const substituteWord = (word) => {
