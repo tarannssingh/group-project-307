@@ -17,7 +17,7 @@ Using Bootstrap we created dialog popups allowing for components to accept and d
 [Check out our Class Diagram](docs/diagram.md)
 
 # Demo Video
-
+[Click to view the demo](https://youtu.be/n11NRBtlf3g)
 
 # Final Presentation
 [https://docs.google.com/presentation/d/1BHITpHPAKnQ0XUZIlyZafL2kal9cnHxQ1WGuUK5OQSk/edit#slide=id.g31c5eb6deea_3_0](https://docs.google.com/presentation/d/1BHITpHPAKnQ0XUZIlyZafL2kal9cnHxQ1WGuUK5OQSk/edit#slide=id.g31c5eb6deea_3_0)
