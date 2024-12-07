@@ -61,3 +61,16 @@ We are using Cypress E2E testing.
 ## Styling
 
 We are using a combination of [React Bootstrap](https://react-bootstrap.netlify.app/) for our page styling and [shadcn/ui](https://ui.shadcn.com/) for components like our credential cards.
+
+
+## Other Core Packages Used
+1. speakeasy for our TOTP
+2. jsonwebtoken for our JWT and User Auth
+3. bcrypt for password encryption
+4. omgopass for random password generation
+5. express for backend
+6. mongoose for mongodb communication
+7. express-validator for sanitizing data sent to endpoints
+8. bootstrap and tailwind for frontend styling
+9. vite and react for frotend 
+
