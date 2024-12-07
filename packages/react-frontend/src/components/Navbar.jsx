@@ -5,6 +5,7 @@ import { LoginContext } from "../pages/Home";
 import { Option1, Option2, Option3 } from "./Settings"; // Named imports
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import settingsIcon from "@/assets/gear-fill.svg";
 
 export default function Navbar() {
   const [searchBy, setSearchBy] = useState("");
@@ -116,7 +117,7 @@ export default function Navbar() {
               content: "none",
             }}
           >
-            <img src="/gear-fill.svg" alt="Settings" width="32" height="32" />
+            <img src={settingsIcon} alt="Settings" width="32" height="32" />
           </button>
           <div
             className="dropdown-menu"
