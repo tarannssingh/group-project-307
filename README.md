@@ -9,6 +9,8 @@ Using Bootstrap we created dialog popups allowing for components to accept and d
 
 ## Deployed Application
 [Link to app](https://delightful-dune-019b8a21e.5.azurestaticapps.net/)
+<br />
+*See these [instructions](docs/instructions.md) on how to create an account and log in.
 
 ## User Stories
 
